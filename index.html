@@ -17,17 +17,15 @@
         }
 
 body {
-  --light: #ffffff;
-  --mid:   #e8d9c0;
-  --dark:  #d4bfa0;
+  --light: #ffffff;   /* 白 */
+  --mid:   #e6d3b4;   /* 薄茶（縦・横のライン） */
+  --dark:  #d0ba96;   /* 交差部分の少し濃い茶 */
 
-  background:
-    linear-gradient(90deg, var(--light) 50%, var(--mid) 50%) 0 0 / 40px 40px,
-    linear-gradient(var(--light) 50%, var(--mid) 50%) 0 0 / 40px 40px,
-    linear-gradient(90deg, #0000 50%, var(--mid) 50%) 20px 20px / 40px 40px,
-    linear-gradient(#0000 50%, var(--mid) 50%) 20px 20px / 40px 40px,
-    linear-gradient(90deg, #0000 50%, var(--dark) 50%) 0 0 / 40px 40px,
-    linear-gradient(#0000 50%, var(--dark) 50%) 0 0 / 40px 40px;
+  background-image:
+    linear-gradient(var(--light) 50%, var(--mid) 50%),      /* 横の濃淡 */
+    linear-gradient(90deg, var(--light) 50%, var(--mid) 50%); /* 縦の濃淡 */
+  background-size: 40px 40px;
+  background-blend-mode: multiply; /* 交差部分が自然に濃くなる */
 }
         
         header {
