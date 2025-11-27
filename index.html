@@ -175,12 +175,16 @@
     50% { transform: translateY(-6px); }
 }
 
-                header{user-select: none;}
+.noselect {
+  user-select: none;
+  -webkit-user-select: none; /* Safari用 */
+  -ms-user-select: none;     /* 古いIE用 */
+}
         
     </style>
 </head>
 <body>
-    <header>
+    <header class="noselect">
         <div class="cafe-deco">🌼</div>
         <h1>Lane's Portfolio</h1>
         <p class="subtitle">れーんのポートフォリオへようこそ</p>
