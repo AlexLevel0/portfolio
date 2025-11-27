@@ -146,6 +146,24 @@
     -webkit-touch-callout: none;
     pointer-events: none; /* これで長押しも右クリックもほぼ死ぬ */
 }
+
+        /* ウォーターマーク */
+.watermark {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    background: rgba(255, 255, 255, 0.75);
+    color: #ff8ad4;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 6px 14px;
+    border-radius: 30px;
+    backdrop-filter: blur(4px);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    pointer-events: none;
+    font-family: 'Comic Sans MS', 'Rounded Mplus 1c', sans-serif;
+}
+        
     </style>
 </head>
 <body>
@@ -173,24 +191,41 @@
      </div>
     </section>
 
-    <section class="gallery">
-        <h2>イラスト集</h2>
-        <div class="gallery-grid">
-            <div class="gallery-item">
-                <img src="img/1.png" alt="イラスト1">
+<section class="gallery">
+    <h2>イラスト集</h2>
+    <div class="gallery-grid">
+        <!-- ここから1枚ずつコピペで増やしてね -->
+        <div class="gallery-item">
+            <div class="protect-container">
+                <img src="img/1.png" alt="イラスト1" class="protected-img">
+                <div class="watermark">© 2025 Lane</div>
             </div>
-            <div class="gallery-item">
-                <img src="img/2.png" alt="イラスト2">
-            </div>
-            <div class="gallery-item">
-                <img src="img/3.png" alt="イラスト3">
-            </div>
-            <div class="gallery-item">
-                <img src="img/4.png" alt="イラスト4">
-            </div>
-            <!-- もっと追加したい場合はここにimgタグ追加してね♡ -->
         </div>
-    </section>
+
+        <div class="gallery-item">
+            <div class="protect-container">
+                <img src="img/2.png" alt="イラスト2" class="protected-img">
+                <div class="watermark">© 2025 Lane</div>
+            </div>
+        </div>
+
+        <div class="gallery-item">
+            <div class="protect-container">
+                <img src="img/3.png" alt="イラスト3" class="protected-img">
+                <div class="watermark">© 2025 Lane</div>
+            </div>
+        </div>
+
+        <div class="gallery-item">
+            <div class="protect-container">
+                <img src="img/4.png" alt="イラスト4" class="protected-img">
+                <div class="watermark">© 2025 Lane</div>
+            </div>
+        </div>
+        <!-- ここまで -->
+    </div>
+</section>
+
 
     <section class="sns">
         <h2>SNS</h2>
