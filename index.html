@@ -17,11 +17,17 @@
         }
 
 body {
-  background-color: #ffffff; /* ベースは白 */
-  background-image:
-    linear-gradient(90deg, rgba(210, 180, 140, 0.3) 1px, transparent 1px),
-    linear-gradient(rgba(210, 180, 140, 0.3) 1px, transparent 1px);
-  background-size: 40px 40px; /* マス目の大きさ */
+  --light: #ffffff;
+  --mid:   #e8d9c0;
+  --dark:  #d4bfa0;
+
+  background:
+    linear-gradient(90deg, var(--light) 50%, var(--mid) 50%) 0 0 / 40px 40px,
+    linear-gradient(var(--light) 50%, var(--mid) 50%) 0 0 / 40px 40px,
+    linear-gradient(90deg, #0000 50%, var(--mid) 50%) 20px 20px / 40px 40px,
+    linear-gradient(#0000 50%, var(--mid) 50%) 20px 20px / 40px 40px,
+    linear-gradient(90deg, #0000 50%, var(--dark) 50%) 0 0 / 40px 40px,
+    linear-gradient(#0000 50%, var(--dark) 50%) 0 0 / 40px 40px;
 }
         
         header {
