@@ -139,6 +139,13 @@
             .profile { flex-direction: column; text-align: center; }
             .profile img { width: 200px; height: 200px; }
         }
+
+        img {
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+    pointer-events: none; /* これで長押しも右クリックもほぼ死ぬ */
+}
     </style>
 </head>
 <body>
