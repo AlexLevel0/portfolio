@@ -17,15 +17,16 @@
         }
 
 body {
-  --light: #ffffff;   /* 白 */
-  --mid:   #e6d3b4;   /* 薄茶（縦・横のライン） */
-  --dark:  #d0ba96;   /* 交差部分の少し濃い茶 */
+  /* ふんわり薄めの色たち */
+  --light: #ffffff;
+  --mid:   rgba(215, 195, 160, 0.25); /* かなり薄いカフェオレ */
+  --dark:  rgba(215, 195, 160, 0.35); /* 交差が少し濃くなる */
 
   background-image:
-    linear-gradient(var(--light) 50%, var(--mid) 50%),      /* 横の濃淡 */
-    linear-gradient(90deg, var(--light) 50%, var(--mid) 50%); /* 縦の濃淡 */
-  background-size: 40px 40px;
-  background-blend-mode: multiply; /* 交差部分が自然に濃くなる */
+    linear-gradient(var(--light) 50%, var(--mid) 50%),
+    linear-gradient(90deg, var(--light) 50%, var(--mid) 50%);
+  background-size: 60px 60px; /* ちょっと大きめで目の疲れ軽減 */
+  background-blend-mode: multiply;
 }
         
         header {
