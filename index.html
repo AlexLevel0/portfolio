@@ -148,20 +148,30 @@
 }
 
         /* ウォーターマーク */
+/* これを<style>内に追加or上書きしてね */
 .watermark {
     position: absolute;
-    bottom: 12px;
-    right: 12px;
-    background: rgba(255, 255, 255, 0.75);
-    color: #ff8ad4;
-    font-size: 16px;
+    bottom: 14px;
+    right: 14px;
+    background: rgba(255, 255, 255, 0.82);
+    color: #ff69b4;           /* ハルっぽい濃いめピンク */
+    font-size: 18px;
     font-weight: bold;
-    padding: 6px 14px;
-    border-radius: 30px;
-    backdrop-filter: blur(4px);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    padding: 9px 18px;
+    border-radius: 50px;
+    backdrop-filter: blur(5px);
+    box-shadow: 0 3px 12px rgba(0,0,0,0.2);
     pointer-events: none;
-    font-family: 'Comic Sans MS', 'Rounded Mplus 1c', sans-serif;
+    font-family: 'Comic Sans MS', 'M PLUS Rounded 1c', sans-serif;
+    opacity: 1 !important;    /* 強制的に常に表示 */
+    z-index: 10;
+    animation: float 6s ease-in-out infinite;  /* ちょっとふわふわ動く可愛さプラス */
+}
+
+/* かわいいふわふわアニメ（任意） */
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-6px); }
 }
         
     </style>
@@ -198,28 +208,28 @@
         <div class="gallery-item">
             <div class="protect-container">
                 <img src="img/1.png" alt="イラスト1" class="protected-img">
-                <div class="watermark">© 2025 Lane</div>
+                <div class="watermark visible">© 2025 Lane</div>
             </div>
         </div>
 
         <div class="gallery-item">
             <div class="protect-container">
                 <img src="img/2.png" alt="イラスト2" class="protected-img">
-                <div class="watermark">© 2025 Lane</div>
+                <div class="watermark visible">© 2025 Lane</div>
             </div>
         </div>
 
         <div class="gallery-item">
             <div class="protect-container">
                 <img src="img/3.png" alt="イラスト3" class="protected-img">
-                <div class="watermark">© 2025 Lane</div>
+                <div class="watermark visible">© 2025 Lane</div>
             </div>
         </div>
 
         <div class="gallery-item">
             <div class="protect-container">
                 <img src="img/4.png" alt="イラスト4" class="protected-img">
-                <div class="watermark">© 2025 Lane</div>
+                <div class="watermark visible">© 2025 Lane</div>
             </div>
         </div>
         <!-- ここまで -->
