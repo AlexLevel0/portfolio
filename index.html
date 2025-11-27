@@ -203,42 +203,34 @@ margin: 24px;
 
 
 header {
-  
-  padding: 20px;
+  padding: 30px 20px;
   position: relative;
-  backdrop-filter: blur(4px);
   z-index: 1;
-  overflow: hidden;
 }
 
-/* ★ レース共通（上下）*/
-header::before,
+/* 上レース */
+header::before {
+  content: "";
+  position: absolute;
+  top: -30px;  /* 少しはみ出して自然に */
+  left: 0;
+  width: 100%;
+  height: 80px; /* ← レースの大きさ調整ここ */
+  background: url("https://i.imgur.com/Hw0k3dH.png") repeat-x center top / contain;
+  pointer-events: none;
+}
+
+/* 下レース */
 header::after {
   content: "";
   position: absolute;
+  bottom: -30px;
   left: 0;
   width: 100%;
-  height: 40px; /* ← レースの大きさをここで調整 */
-  background:
-    radial-gradient(circle at 20px 20px, rgba(255,255,255,0.8) 18px, transparent 19px),
-    radial-gradient(circle at 60px 20px, rgba(255,255,255,0.8) 18px, transparent 19px),
-    radial-gradient(circle at 100px 20px, rgba(255,255,255,0.8) 18px, transparent 19px);
-  background-size: 120px 40px; /* 繰り返し幅 */
-  background-repeat: repeat-x;
-  filter: drop-shadow(0 2px 2px rgba(0,0,0,0.05));
+  height: 80px;
+  background: url("https://i.imgur.com/Hw0k3dH.png") repeat-x center bottom / contain;
+  pointer-events: none;
 }
-
-/* 上のレース */
-header::before {
-  top: -20px; /* 半分隠して自然に見せる */
-}
-
-/* 下のレース */
-header::after {
-  bottom: -20px;
-  transform: rotate(180deg); /* 裏返して対称に */
-}
-
         
         
     </style>
