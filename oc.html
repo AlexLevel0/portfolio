@@ -216,12 +216,22 @@
 
 <script>
 const characters = [
-  { name: "レア", role: "RARE", main: "img/rare1.png", sub1: "img/rare2.png", sub2: "img/rare3.png", desc: `<h4>プロフィール</h4>年齢：22歳<br>誕生日：5月5日<br>好きな飲み物：キャラメルラテ<br><br><h4>自己紹介</h4>「いらっしゃいませ！ アリスです♪ 当店自慢のふわふわパンケーキ、ぜひ召し上がれ～」` },
-  { name: "らいむ", role: "RAIMU", main: "img/raimu1.png", sub1: "img/raimu2.png", sub2: "img/raimu3.png", desc: `<h4>プロフィール</h4>年齢：25歳<br>誕生日：11月11日<br>好きな飲み物：エスプレッソ<br><br><h4>自己紹介</h4>「お待たせしました。完璧な一杯をどうぞ」` },
-  { name: "さくと", role: "SAKUTO", main: "img/sakuto1.png", sub1: "img/sakuto2.png", sub2: "img/sakuto3.png", desc: `<h4>プロフィール</h4>年齢：20歳<br>誕生日：8月20日<br>好きなスイーツ：モンブラン<br><br><h4>自己紹介</h4>「今日のケーキ、自信作ですっ！」` },
-  { name: "キース", role: "KEITH", main: "img/keith1.png", sub1: "img/keith2.png", sub2: "img/keith3.png", desc: `<h4>プロフィール</h4>年齢：19歳<br>誕生日：3月3日<br>好きな飲み物：抹茶ラテ<br><br><h4>自己紹介</h4>「お席にご案内しまーす！」` },
-  { name: "レナ", role: "RENA", main: "img/rena1.png", sub1: "img/rena2.png", sub2: "img/rena3.png", desc: `<h4>プロフィール</h4>年齢：？？？<br>誕生日：秘密<br><br><h4>自己紹介</h4>「……静かに執筆させてくれ」` },
-  { name: "りょうと", role: "RYOTO", main: "img/ryoto1.png", sub1: "img/ryoto2.png", sub2: "img/ryoto3.png", desc: `<h4>プロフィール</h4>年齢：27歳<br>誕生日：12月24日<br>好きなカクテル：マンハッタン<br><br><h4>自己紹介</h4>「夜の帳が下りたら、俺の時間だ」` }
+  { name: "レア", role: "RARE", main: "img/rare1.png", sub1: "img/rare2.png", sub2: "img/rare3.png", desc: `<h4>プロフィール</h4>年齢：24歳<br>MBTI：ISTJ-A<br>好きな飲み物：アールグレイ紅茶<br><br><h4>自己紹介</h4>大人しいけど心のツッコミが男勝りな主人公。
+実は素直で可愛い。` },
+  { name: "らいむ", role: "RAIMU", main: "img/raimu1.png", sub1: "img/raimu2.png", sub2: "img/raimu3.png", desc: `<h4>プロフィール</h4>年齢：26歳<br>MBTI：ENFP-T<br>好きな飲み物：レモンスカッシュ<br><br><h4>自己紹介</h4>フォロワー10万超えの有名歌い
+手。
+謙虚だけど頭はお花畑。実力はガチプロ。` },
+  { name: "さくと", role: "SAKUTO", main: "img/sakuto1.png", sub1: "img/sakuto2.png", sub2: "img/sakuto3.png", desc: `<h4>プロフィール</h4>年齢：28歳<br>MBTI：ISTP-A<br>好きな食べ物：きのこ<br><br><h4>自己紹介</h4>バンドマン。仕事は俺様、プライベートはゆったり穏やか。
+理解不能なボケ連発するらいむの先輩。` },
+  { name: "キース", role: "KEITH", main: "img/keith1.png", sub1: "img/keith2.png", sub2: "img/keith3.png", desc: `<h4>プロフィール</h4>年齢：30歳<br>MBTI：ESTP-A<br>好きな飲み物：コーヒー（ブラック）<br><br><h4>自己紹介</h4>高身長アウトドア兄貴。
+レナにデレデレで超モテ男。` },
+  { name: "レナ", role: "RENA", main: "img/rena1.png", sub1: "img/rena2.png", sub2: "img/rena3.png", desc: `<h4>プロフィール</h4>年齢：20歳<br>MBTI：ISFP-T<br>好きな飲み物：ロイヤルミルクティー<br><h4>自己紹介</h4>童顔ちっちゃ可愛い彼女。
+控えめで恥ずかしがり屋だけど
+キースのおかげで笑顔が増えた。
+カフェ巡り大好き。` },
+  { name: "りょうと", role: "RYOTO", main: "img/ryoto1.png", sub1: "img/ryoto2.png", sub2: "img/ryoto3.png", desc: `<h4>プロフィール</h4>年齢：28歳<br>MBTI：ENFJ-A<br>好きな飲み物：コーヒー（砂糖入り）<br><br><h4>自己紹介</h4>四人兄妹の長男SE。 爽やか優しいけど実はゲームしたい盛り。
+方向音痴な癒しポイントあり。
+支払いは常にカード。` }
 ];
 
 const grid = document.getElementById('characterGrid');
