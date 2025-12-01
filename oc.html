@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>Cafe de Characters</title>
+<title>Café de Characters</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
   :root {
@@ -18,7 +18,6 @@
     font-family: 'Segoe UI', 'Hiragino Kaku Gothic ProN', Meiryo, sans-serif;
     background: linear-gradient(135deg, #f9f1e9 0%, #f0e6d9 100%);
     color: var(--cafe-dark);
-    min-height: 100vh;
   }
 
   header {
@@ -29,17 +28,8 @@
     box-shadow: 0 4px 10px rgba(0,0,0,0.2);
   }
 
-  header h1 {
-    margin: 0;
-    font-size: 2.5rem;
-    letter-spacing: 0.1em;
-  }
-
-  .subtitle {
-    font-size: 1.1rem;
-    margin-top: 0.5rem;
-    opacity: 0.9;
-  }
+  header h1 { margin: 0; font-size: 2.5rem; letter-spacing: 0.1em; }
+  .subtitle { font-size: 1.1rem; margin-top: 0.5rem; opacity: 0.9; }
 
   .container {
     max-width: 1200px;
@@ -50,15 +40,13 @@
   .grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 30px;
-    padding: 20px 0;
+    gap: 24px;
+    padding: 10px 0;
   }
 
+  /* スマホは2列、768px以上で3列にしたい場合はこちら（お好みで） */
   @media (min-width: 768px) {
-    .grid { grid-template-columns: repeat(2, 1fr); }
-  }
-  @media (min-width: 1024px) {
-    .grid { grid-template-columns: repeat(3, 1fr); gap: 40px; }
+    .grid { grid-template-columns: repeat(3, 1fr); gap: 30px; }
   }
 
   .card {
@@ -66,7 +54,7 @@
     border-radius: 20px;
     overflow: hidden;
     box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-    transition: transform 0.3s, box-shadow 0.3s;
+    transition: all 0.3s;
     cursor: pointer;
   }
 
@@ -75,21 +63,33 @@
     box-shadow: 0 20px 40px rgba(0,0,0,0.2);
   }
 
-  .card img.main {
+  /* ここが重要！画像を正方形にする */
+  .img-wrapper {
+    position: relative;
     width: 100%;
-    height: 320px;
-    object-fit: cover;
+    padding-top: 100%; /* 1:1 のアスペクト比 */
+    overflow: hidden;
+    background: #f0e6d9;
+  }
+
+  .img-wrapper img {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* 画像をトリミングして正方形に収める */
+    object-position: center;
   }
 
   .card-body {
-    padding: 20px;
+    padding: 18px;
     text-align: center;
     background: var(--cafe-cream);
   }
 
   .card h3 {
-    margin: 0 0 8px;
-    font-size: 1.5rem;
+    margin: 0 0 6px;
+    font-size: 1.4rem;
     color: var(--cafe-brown);
   }
 
@@ -97,16 +97,17 @@
     margin: 0;
     color: var(--accent);
     font-weight: bold;
+    font-size: 0.95rem;
   }
 
-  /* モーダル */
+  /* モーダル部分はほぼそのまま（少しだけ調整） */
   .modal {
     display: none;
     position: fixed;
     z-index: 1000;
     left: 0; top: 0;
     width: 100%; height: 100%;
-    background: rgba(0,0,0,0.7);
+    background: rgba(0,0,0,0.75);
     align-items: center;
     justify-content: center;
     padding: 20px;
@@ -120,7 +121,6 @@
     width: 100%;
     max-height: 90vh;
     overflow-y: auto;
-    position: relative;
     box-shadow: 0 20px 50px rgba(0,0,0,0.4);
   }
 
@@ -130,15 +130,15 @@
     padding: 20px;
     text-align: center;
     border-radius: 20px 20px 0 0;
+    position: relative;
   }
 
   .close {
     position: absolute;
-    top: 15px;
-    right: 25px;
-    font-size: 40px;
+    top: 10px;
+    right: 20px;
+    font-size: 42px;
     cursor: pointer;
-    color: white;
     opacity: 0.8;
   }
 
@@ -171,6 +171,7 @@
     color: var(--cafe-brown);
     border-bottom: 2px solid var(--accent);
     padding-bottom: 5px;
+    margin-top: 1.5em;
   }
 
   @media (max-width: 768px) {
@@ -188,7 +189,7 @@
 
 <div class="container">
   <div class="grid" id="characterGrid">
-    <!-- ここにキャラクターカードがJavaScriptで追加されます -->
+    <!-- JSでカード生成 -->
   </div>
 </div>
 
@@ -196,7 +197,7 @@
 <div id="modal" class="modal">
   <div class="modal-content">
     <div class="modal-header">
-      <span class="close">&times;</span>
+      <span class="close">×</span>
       <h2 id="modalName"></h2>
       <p id="modalRole"></p>
     </div>
@@ -205,7 +206,7 @@
         <img id="modalMainImg" alt="">
         <div class="profile-text" id="modalDesc"></div>
       </div>
-      <div class="profile-grid" style="margin-top:20px;">
+      <div class="profile-grid" style="margin-top:25px;">
         <img id="modalSub1" alt="">
         <img id="modalSub2" alt="">
       </div>
@@ -214,89 +215,24 @@
 </div>
 
 <script>
-// キャラクターのデータ（画像は適宜差し替えてください）
 const characters = [
-  {
-    name: "アリス",
-    role: "看板娘・店長",
-    main: "https://picsum.photos/400/500?random=1",
-    sub1: "https://picsum.photos/400/400?random=11",
-    sub2: "https://picsum.photos/400/400?random=12",
-    desc: `<h4>プロフィール</h4>
-           年齢：22歳<br>誕生日：5月5日<br>好きな飲み物：キャラメルラテ<br><br>
-           <h4>自己紹介</h4>
-           「いらっしゃいませ！ アリスです♪ 当店自慢のふわふわパンケーキ、ぜひ召し上がれ～」<br>
-           いつも笑顔でみんなを癒すカフェの看板娘。実は甘いもの作りが得意で、新メニューを考えるのが大好き。`
-  },
-  {
-    name: "レン",
-    role: "バリスタ",
-    main: "https://picsum.photos/400/500?random=2",
-    sub1: "https://picsum.photos/400/400?random=21",
-    sub2: "https://picsum.photos/400/400?random=22",
-    desc: `<h4>プロフィール</h4>
-           年齢：25歳<br>誕生日：11月11日<br>好きな飲み物：エスプレッソ<br><br>
-           <h4>自己紹介</h4>
-           「お待たせしました。完璧な一杯をどうぞ」<br>
-           クールな見た目とは裏腹にコーヒーへの情熱は熱い。ラテアート世界大会3位の実績あり。`
-  },
-  {
-    name: "ミア",
-    role: "パティシエ",
-    main: "https://picsum.photos/400/500?random=3",
-    sub1: "https://picsum.photos/400/400?random=31",
-    sub2: "https://picsum.photos/400/400?random=32",
-    desc: `<h4>プロフィール</h4>
-           年齢：20歳<br>誕生日：8月20日<br>好きなスイーツ：モンブラン<br><br>
-           <h4>自己紹介</h4>
-           「今日のケーキ、自信作ですっ！ 食べて感想聞かせてくださいね～」<br>
-           天才的な味覚の持ち主。小動物系でちょこちょこ動いている姿が人気。`
-  },
-  {
-    name: "ユウキ",
-    role: "ホールスタッフ",
-    main: "https://picsum.photos/400/500?random=4",
-    sub1: "https://picsum.photos/400/400?random=41",
-    sub2: "https://picsum.photos/400/400?random=42",
-    desc: `<h4>プロフィール</h4>
-           年齢：19歳<br>誕生日：3月3日<br>好きな飲み物：抹茶ラテ<br><br>
-           <h4>自己紹介</h4>
-           「お席にご案内しまーす！ 何かありましたら気軽に声かけてください！」<br>
-           元気いっぱいのムードメーカー。お客さんとのおしゃべりが大好き。`
-  },
-  {
-    name: "ソラ",
-    role: "常連客（謎の作家）",
-    main: "https://picsum.photos/400/500?random=5",
-    sub1: "https://picsum.photos/400/400?random=51",
-    sub2: "https://picsum.photos/400/400?random=52",
-    desc: `<h4>プロフィール</h4>
-           年齢：？？？<br>誕生日：秘密<br>好きな席：窓際カウンター<br><br>
-           <h4>自己紹介</h4>
-           「……静かに執筆させてくれ」<br>
-           毎日同じ席で原稿を書いているミステリアスな常連。実は超有名な小説家らしい…？`
-  },
-  {
-    name: "ルカ",
-    role: "夜限定バーテンダー",
-    main: "https://picsum.photos/400/500?random=6",
-    sub1: "https://picsum.photos/400/400?random=61",
-    sub2: "https://picsum.photos/400/400?random=62",
-    desc: `<h4>プロフィール</h4>
-           年齢：27歳<br>誕生日：12月24日<br>好きなカクテル：マンハッタン<br><br>
-           <h4>自己紹介</h4>
-           「夜の帳が下りたら、俺の時間だ」<br>
-           夜だけ現れる大人の雰囲気漂うバーテンダー。語り出すと止まらない酒の蘊蓄が名物。`
-  }
+  { name: "アリス", role: "看板娘・店長", main: "https://picsum.photos/600/800?random=1", sub1: "https://picsum.photos/600/600?random=11", sub2: "https://picsum.photos/600/600?random=12", desc: `<h4>プロフィール</h4>年齢：22歳<br>誕生日：5月5日<br>好きな飲み物：キャラメルラテ<br><br><h4>自己紹介</h4>「いらっしゃいませ！ アリスです♪ 当店自慢のふわふわパンケーキ、ぜひ召し上がれ～」` },
+  { name: "レン", role: "バリスタ", main: "https://picsum.photos/600/800?random=2", sub1: "https://picsum.photos/600/600?random=21", sub2: "https://picsum.photos/600/600?random=22", desc: `<h4>プロフィール</h4>年齢：25歳<br>誕生日：11月11日<br>好きな飲み物：エスプレッソ<br><br><h4>自己紹介</h4>「お待たせしました。完璧な一杯をどうぞ」` },
+  { name: "ミア", role: "パティシエ", main: "https://picsum.photos/600/800?random=3", sub1: "https://picsum.photos/600/600?random=31", sub2: "https://picsum.photos/600/600?random=32", desc: `<h4>プロフィール</h4>年齢：20歳<br>誕生日：8月20日<br>好きなスイーツ：モンブラン<br><br><h4>自己紹介</h4>「今日のケーキ、自信作ですっ！」` },
+  { name: "ユウキ", role: "ホールスタッフ", main: "https://picsum.photos/600/800?random=4", sub1: "https://picsum.photos/600/600?random=41", sub2: "https://picsum.photos/600/600?random=42", desc: `<h4>プロフィール</h4>年齢：19歳<br>誕生日：3月3日<br>好きな飲み物：抹茶ラテ<br><br><h4>自己紹介</h4>「お席にご案内しまーす！」` },
+  { name: "ソラ", role: "常連客（謎の作家）", main: "https://picsum.photos/600/800?random=5", sub1: "https://picsum.photos/600/600?random=51", sub2: "https://picsum.photos/600/600/600?random=52", desc: `<h4>プロフィール</h4>年齢：？？？<br>誕生日：秘密<br><br><h4>自己紹介</h4>「……静かに執筆させてくれ」` },
+  { name: "ルカ", role: "夜限定バーテンダー", main: "https://picsum.photos/600/800?random=6", sub1: "https://picsum.photos/600/600?random=61", sub2: "https://picsum.photos/600/600?random=62", desc: `<h4>プロフィール</h4>年齢：27歳<br>誕生日：12月24日<br>好きなカクテル：マンハッタン<br><br><h4>自己紹介</h4>「夜の帳が下りたら、俺の時間だ」` }
 ];
 
-// カードを生成
 const grid = document.getElementById('characterGrid');
-characters.forEach((ch, index) => {
+
+characters.forEach(ch => {
   const card = document.createElement('div');
   card.className = 'card';
   card.innerHTML = `
-    <img class="main" src="${ch.main}" alt="${ch.name}">
+    <div class="img-wrapper">
+      <img src="${ch.main}" alt="${ch.name}">
+    </div>
     <div class="card-body">
       <h3>${ch.name}</h3>
       <p class="role">${ch.role}</p>
@@ -306,14 +242,11 @@ characters.forEach((ch, index) => {
   grid.appendChild(card);
 });
 
-// モーダル操作
 const modal = document.getElementById('modal');
 const closeBtn = document.querySelector('.close');
 
 closeBtn.onclick = () => modal.style.display = 'none';
-window.onclick = (e) => {
-  if (e.target === modal) modal.style.display = 'none';
-};
+window.onclick = (e) => { if (e.target === modal) modal.style.display = 'none'; };
 
 function openModal(ch) {
   document.getElementById('modalName').textContent = ch.name;
