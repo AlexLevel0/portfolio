@@ -1,1 +1,300 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ふわもこ♡ファンタジーワールド</title>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Kosugi+Maru&display=swap');
+    
+    body {
+        font-family: 'Kosugi Maru', sans-serif;
+        background: linear-gradient(135deg, #fdf2f8 0%, #e0f2fe 100%);
+        margin: 0;
+        padding: 20px;
+        color: #5c5470;
+    }
+    .container {
+        max-width: 1000px;
+        margin: 0 auto;
+        text-align: center;
+    }
+    h1 {
+        font-size: 2.8rem;
+        color: #ff8fab;
+        text-shadow: 2px 2px 8px rgba(255,141,171,0.3);
+        margin-bottom: 10px;
+    }
+    .intro {
+        background: rgba(255,255,255,0.7);
+        padding: 25px;
+        border-radius: 20px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        margin-bottom: 40px;
+        line-height: 1.8;
+        font-size: 1.1rem;
+    }
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 25px;
+        padding: 0 10px;
+    }
+    @media (max-width: 768px) {
+        .grid { grid-template-columns: 1fr; }
+    }
+    .card {
+        background: white;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+    .card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    }
+    .card img {
+        width: 100%;
+        height: 300px;
+        object-fit: cover;
+    }
+    .card-info {
+        padding: 20px;
+    }
+    .card-name {
+        font-size: 1.6rem;
+        color: #ff8fab;
+        margin: 0 0 8px 0;
+    }
+    .card-role {
+        font-size: 1rem;
+        color: #a0a0a0;
+        margin: 0;
+    }
 
+    /* モーダル */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 100;
+        left: 0; top: 0;
+        width: 100%; height: 100%;
+        background: rgba(0,0,0,0.6);
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        box-sizing: border-box;
+    }
+    .modal.active {
+        display: flex;
+    }
+    .modal-content {
+        background: white;
+        border-radius: 25px;
+        max-width: 500px;
+        width: 100%;
+        max-height: 90vh;
+        overflow-y: auto;
+        position: relative;
+        box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+    }
+    .close {
+        position: absolute;
+        top: 15px;
+        right: 20px;
+        font-size: 2rem;
+        color: #aaa;
+        cursor: pointer;
+        z-index: 101;
+    }
+    .close:hover { color: #ff8fab; }
+    .profile {
+        text-align: center;
+        padding: 40px 30px 30px;
+    }
+    .profile img {
+        width: 180px;
+        height: 180px;
+        border-radius: 50%;
+        border: 8px solid #ffeef8;
+        object-fit: cover;
+    }
+    .profile h2 {
+        margin: 20px 0 10px;
+        font-size: 2.2rem;
+        color: #ff8fab;
+    }
+    .profile p {
+        line-height: 1.8;
+        margin: 15px 0;
+        color: #5c5470;
+    }
+    .tag {
+        display: inline-block;
+        background: #ffeef8;
+        color: #ff8fab;
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        margin: 5px;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h1>ふわもこ♡スイーツ王国</h1>
+    <div class="intro">
+        甘～い香りが漂うお菓子でできた王国♡<br>
+        ここに住む6人の女の子たちは、みんなちょっと変わった“スイーツの守護者”。<br>
+        今日も彼女たちは王国を守るため（？）に、甘い冒険を繰り広げてるんだよ～！
+    </div>
+
+    <div class="grid">
+        <!-- キャラ1 -->
+        <div class="card" onclick="openModal('modal1')">
+            <img src="https://picsum.photos/400/500?random=1" alt="ミルク">
+            <div class="card-info">
+                <h3 class="card-name">ミルク</h3>
+                <p class="card-role">牛乳プリンセス</p>
+            </div>
+        </div>
+
+        <!-- キャラ2 -->
+        <div class="card" onclick="openModal('modal2')">
+            <img src="https://picsum.photos/400/500?random=2" alt="ショコラ">
+            <div class="card-info">
+                <h3 class="card-name">ショコラ</h3>
+                <p class="card-role">ビターチョコ魔女</p>
+            </div>
+        </div>
+
+        <!-- キャラ3 -->
+        <div class="card" onclick="openModal('modal3')">
+            <img src="https://picsum.photos/400/500?random=3" alt="いちご">
+            <div class="card-info">
+                <h3 class="card-name">いちご</h3>
+                <p class="card-role">ストロベリー騎士</p>
+            </div>
+        </div>
+
+        <!-- キャラ4 -->
+        <div class="card" onclick="openModal('modal4')">
+            <img src="https://picsum.photos/400/500?random=4" alt="ミント">
+            <div class="card-info">
+                <h3 class="card-name">ミント</h3>
+                <p class="card-role">ミントアイス忍者</p>
+            </div>
+        </div>
+
+        <!-- キャラ5 -->
+        <div class="card" onclick="openModal('modal5')">
+            <img src="https://picsum.photos/400/500?random=5" alt="ハニィ">
+            <div class="card-info">
+                <h3 class="card-name">ハニィ</h3>
+                <p class="card-role">はちみつ精霊</p>
+            </div>
+        </div>
+
+        <!-- キャラ6 -->
+        <div class="card" onclick="openModal('modal6')">
+            <img src="https://picsum.photos/400/500?random=6" alt="マカロン">
+            <div class="card-info">
+                <h3 class="card-name">マカロン</h3>
+                <p class="card-role">マカロン占い師</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- モーダルたち -->
+<div id="modal1" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('modal1')">×</span>
+        <div class="profile">
+            <img src="https://picsum.photos/400/500?random=1" alt="ミルク">
+            <h2>ミルク</h2>
+            <p>ふわふわ牛乳プリンセス♡<br>優しくておっとりしてるけど、実はドジっ子属性全開！<br>「えへへ、またこぼしちゃった…♡」が口癖。</p>
+            <div><span class="tag">癒し系</span><span class="tag">ドジっ子</span><span class="tag">甘々</span></div>
+        </div>
+    </div>
+</div>
+
+<div id="modal2" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('modal2')">×</span>
+        <div class="profile">
+            <img src="https://picsum.photos/400/500?random=2" alt="ショコラ">
+            <h2>ショコラ</h2>
+            <p>ちょっとツンデレなビターチョコ魔女。<br>「べ、別に甘いものなんて好きじゃないんだからね！」<br>でも実は甘々大好き♡</p>
+            <div><span class="tag">ツンデレ</span><span class="tag">魔法使い</span><span class="tag">チョコ中毒</span></div>
+        </div>
+    </div>
+</div>
+
+<div id="modal3" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('modal3')">×</span>
+        <div class="profile">
+            <img src="https://picsum.photos/400/500?random=3" alt="いちご">
+            <h2>いちご</h2>
+            <p>元気いっぱいストロベリー騎士！<br>「甘いものに敵はいない！」が信条。<br>いつも全力で突っ走っちゃうタイプ。</p>
+            <div><span class="tag">元気娘</span><span class="tag">騎士</span><span class="tag">いちご中毒</span></div>
+        </div>
+    </div>
+</div>
+
+<div id="modal4" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('modal4')">×</span>
+        <div class="profile">
+            <img src="https://picsum.photos/400/500?random=4" alt="ミント">
+            <h2>ミント</h2>
+            <p>クールなミントアイス忍者。<br>無口だけど実はめっちゃ甘党。<br>「…甘いものは正義」</p>
+            <div><span class="tag">クール</span><span class="tag">忍者</span><span class="tag">隠れ甘党</span></div>
+        </div>
+    </div>
+</div>
+
+<div id="modal5" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('modal5')">×</span>
+        <div class="profile">
+            <img src="https://picsum.photos/400/500?random=5" alt="ハニィ">
+            <h2>ハニィ</h2>
+            <p>いつもニコニコはちみつ精霊♡<br>「みんなに幸せのおすそ分け～！」<br>ハグ攻撃が得意技。</p>
+            <div><span class="tag">癒し</span><span class="tag">天然</span><span class="tag">ハグ魔</span></div>
+        </div>
+    </div>
+</div>
+
+<div id="modal6" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('modal6')">×</span>
+        <div class="profile">
+            <img src="https://picsum.photos/400/500?random=6" alt="マカロン">
+            <h2>マカロン</h2>
+            <p>ちょっとミステリアスなマカロン占い師。<br>「あなたの運勢は…甘すぎて溶けそう♡」<br>いつも意味深なこと言ってる。</p>
+            <div><span class="tag">ミステリアス</span><span class="tag">占い師</span><span class="tag">甘々予言</span></div>
+        </div>
+    </div>
+</div>
+
+<script>
+function openModal(id) {
+    document.getElementById(id).classList.add('active');
+}
+function closeModal(id) {
+    document.getElementById(id).classList.remove('active');
+}
+// モーダル外クリックで閉じる
+window.onclick = function(e) {
+    if (e.target.classList.contains('modal')) {
+        e.target.classList.remove('active');
+    }
+}
+</script>
+</body>
+</html>
