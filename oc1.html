@@ -5,14 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>虹色のりんご</title>
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Kosugi+Maru&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Kosugi+Maru&family=M+PLUS+Rounded+1c:wght@700&display=swap');
     
+    * { box-sizing: border-box; }
     body {
         font-family: 'Kosugi Maru', sans-serif;
         background: linear-gradient(135deg, #fdf2f8 0%, #e0f2fe 100%);
         margin: 0;
-        padding: 20px;
+        padding: 20px 0;
         color: #5c5470;
+        overflow-x: hidden;
     }
     .container {
         max-width: 1000px;
@@ -20,125 +22,157 @@
         text-align: center;
     }
     h1 {
-        font-size: 2.8rem;
+        font-family: 'M PLUS Rounded 1c', sans-serif;
+        font-size: 3rem;
         color: #ff8fab;
-        text-shadow: 2px 2px 8px rgba(255,141,171,0.3);
+        text-shadow: 3px 3px 10px rgba(255,141,171,0.4);
         margin-bottom: 10px;
     }
     .intro {
-        background: rgba(255,255,255,0.7);
+        background: rgba(255,255,255,0.8);
         padding: 25px;
-        border-radius: 20px;
-        box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        border-radius: 25px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         margin-bottom: 40px;
-        line-height: 1.8;
-        font-size: 1.1rem;
+        line-height: 1.9;
+        font-size: 1.15rem;
+        backdrop-filter: blur(5px);
     }
-    .grid {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 25px;
-        padding: 0 10px;
+
+    /* スライダー全体 */
+    .slider-container {
+        position: relative;
+        overflow: hidden;
+        border-radius: 25px;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        background: white;
+        margin-bottom: 30px;
     }
-    @media (max-width: 768px) {
-        .grid { grid-template-columns: 1fr; }
+    .slider {
+        display: flex;
+        transition: transform 0.5s cubic-bezier(0.7, 0, 0.3, 1);
+        touch-action: pan-x;
     }
     .card {
+        min-width: 50vw; /* スマホでは常に2列表示 */
+        padding: 15px;
+        user-select: none;
+    }
+    @media (min-width: 768px) {
+        .card { min-width: 33.333%; } /* PCでは3列 */
+    }
+    .card-inner {
         background: white;
-        border-radius: 20px;
+        border-radius: 25px;
         overflow: hidden;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        box-shadow: 0 12px 30px rgba(0,0,0,0.12);
         cursor: pointer;
-        transition: all 0.3s;
+        transition: all 0.4s;
+        border: 3px solid transparent;
+        background-clip: padding-box;
+        position: relative;
+    }
+    .card-inner::before {
+        content: '';
+        position: absolute;
+        inset: -3px;
+        border-radius: 28px;
+        padding: 3px;
+        background: linear-gradient(45deg, #ff8fab, #a0c4ff, #ffd1a4);
+        -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        opacity: 0;
+        transition: opacity 0.4s;
+        z-index: -1;
+    }
+    .card:hover .card-inner::before,
+    .card:active .card-inner::before {
+        opacity: 1;
     }
     .card:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        transform: translateY(-12px) scale(1.02);
     }
     .card img {
         width: 100%;
-        height: 300px;
+        height: 280px;
         object-fit: cover;
+        border-bottom: 4px solid #ffeef8;
     }
     .card-info {
-        padding: 20px;
+        padding: 20px 15px 25px;
+        background: linear-gradient(to top, #fff8fb, white);
     }
     .card-name {
-        font-size: 1.6rem;
+        font-size: 1.65rem;
         color: #ff8fab;
-        margin: 0 0 8px 0;
+        margin: 0 0 6px;
+        font-weight: bold;
     }
     .card-role {
         font-size: 1rem;
-        color: #a0a0a0;
-        margin: 0;
+        color: #b0b0b0;
     }
 
-    /* モーダル */
-    .modal {
-        display: none;
-        position: fixed;
-        z-index: 100;
-        left: 0; top: 0;
-        width: 100%; height: 100%;
-        background: rgba(0,0,0,0.6);
+    /* 矢印ボタン */
+    .nav-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 50px; height: 50px;
+        background: rgba(255,255,255,0.9);
+        border-radius: 50%;
+        display: flex;
         align-items: center;
         justify-content: center;
-        padding: 20px;
-        box-sizing: border-box;
+        font-size: 2rem;
+        color: #ff8fab;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        cursor: pointer;
+        z-index: 10;
+        user-select: none;
+        transition: all 0.3s;
     }
-    .modal.active {
+    .nav-btn:hover {
+        transform: translateY(-50%) scale(1.15);
+        background: #ff8fab;
+        color: white;
+    }
+    .prev { left: 15px; }
+    .next { right: 15px; }
+
+    /* ドットインジケーター */
+    .dots {
         display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 15px;
     }
+    .dot {
+        width: 10px; height: 10px;
+        border-radius: 50%;
+        background: #ddd;
+        transition: all 0.3s;
+    }
+    .dot.active {
+        background: #ff8fab;
+        transform: scale(1.4);
+    }
+
+    /* モーダル少し可愛く */
     .modal-content {
-        background: white;
-        border-radius: 25px;
-        max-width: 500px;
-        width: 100%;
-        max-height: 90vh;
-        overflow-y: auto;
-        position: relative;
-        box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+        border: 5px solid transparent;
+        background: linear-gradient(white, white) padding-box,
+                    linear-gradient(45deg, #ff8fab, #a0c4ff) border-box;
     }
     .close {
-        position: absolute;
-        top: 15px;
-        right: 20px;
-        font-size: 2rem;
-        color: #aaa;
-        cursor: pointer;
-        z-index: 101;
-    }
-    .close:hover { color: #ff8fab; }
-    .profile {
-        text-align: center;
-        padding: 40px 30px 30px;
-    }
-    .profile img {
-        width: 180px;
-        height: 180px;
-        border-radius: 50%;
-        border: 8px solid #ffeef8;
-        object-fit: cover;
-    }
-    .profile h2 {
-        margin: 20px 0 10px;
-        font-size: 2.2rem;
-        color: #ff8fab;
-    }
-    .profile p {
-        line-height: 1.8;
-        margin: 15px 0;
-        color: #5c5470;
-    }
-    .tag {
-        display: inline-block;
+        width: 40px; height: 40px;
         background: #ffeef8;
-        color: #ff8fab;
-        padding: 5px 12px;
-        border-radius: 20px;
-        font-size: 0.9rem;
-        margin: 5px;
+        border-radius: 50%;
+        line-height: 36px;
+        font-size: 1.8rem;
+        top: -15px; right: -15px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
     }
 </style>
 </head>
@@ -152,61 +186,17 @@
         あなたの心を揺れ動かします。
     </div>
 
-    <div class="grid">
-        <!-- キャラ1 -->
-        <div class="card" onclick="openModal('modal1')">
-            <img src="img/rinon.jpeg" alt="りのん">
-            <div class="card-info">
-                <h3 class="card-name">りのん</h3>
-                <p class="card-role">Rinon</p>
-            </div>
+    <!-- スライダー -->
+    <div class="slider-container">
+        <div class="slider" id="slider">
+            <!-- ここにカードがJSで入る -->
         </div>
 
-        <!-- キャラ2 -->
-        <div class="card" onclick="openModal('modal2')">
-            <img src="img/mashiro.jpeg" alt="ましろ">
-            <div class="card-info">
-                <h3 class="card-name">ましろ</h3>
-                <p class="card-role">Mashiro</p>
-            </div>
-        </div>
-
-        <!-- キャラ3 -->
-        <div class="card" onclick="openModal('modal3')">
-            <img src="img/nana.jpeg" alt="なな">
-            <div class="card-info">
-                <h3 class="card-name">なな</h3>
-                <p class="card-role">Nana</p>
-            </div>
-        </div>
-
-        <!-- キャラ4 -->
-        <div class="card" onclick="openModal('modal4')">
-            <img src="img/yua.jpeg" alt="ゆあ">
-            <div class="card-info">
-                <h3 class="card-name">ゆあ</h3>
-                <p class="card-role">Yua</p>
-            </div>
-        </div>
-
-        <!-- キャラ5 -->
-        <div class="card" onclick="openModal('modal5')">
-            <img src="img/hibiki.jpeg" alt="ひびき">
-            <div class="card-info">
-                <h3 class="card-name">ひびき</h3>
-                <p class="card-role">Hibiki</p>
-            </div>
-        </div>
-
-        <!-- キャラ6 -->
-        <div class="card" onclick="openModal('modal6')">
-            <img src="img/ham.jpeg" alt="ハム">
-            <div class="card-info">
-                <h3 class="card-name">ハム</h3>
-                <p class="card-role">Ham</p>
-            </div>
-        </div>
+        <div class="nav-btn prev" id="prev">‹</div>
+        <div class="nav-btn next" id="next">›</div>
     </div>
+
+    <div class="dots" id="dots"></div>
 </div>
 
 <!-- モーダルたち -->
@@ -283,13 +273,94 @@
 </div>
 
 <script>
+// キャラクターデータ
+const characters = [
+    {id: "modal1", name: "りのん", role: "Rinon", img: "img/rinon.jpeg"},
+    {id: "modal2", name: "ましろ", role: "Mashiro", img: "img/mashiro.jpeg"},
+    {id: "modal3", name: "なな", role: "Nana", img: "img/nana.jpeg"},
+    {id: "modal4", name: "ゆあ", role: "Yua", img: "img/yua.jpeg"},
+    {id: "modal5", name: "ひびき", role: "Hibiki", img: "img/hibiki.jpeg"},
+    {id: "modal6", name: "ハム", role: "Ham", img: "img/ham.jpeg"}
+];
+
+const slider = document.getElementById('slider');
+let currentIndex = 0;
+let totalGroups = 1;
+
+// カード生成後に実行されるように関数化
+function initSlider() {
+    // カード生成
+    characters.forEach(char => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.onclick = () => openModal(char.id);
+        card.innerHTML = `
+            <div class="card-inner">
+                <img src="${char.img}" alt="${char.name}">
+                <div class="card-info">
+                    <h3 class="card-name">${char.name}</h3>
+                    <p class="card-role">${char.role}</p>
+                </div>
+            </div>
+        `;
+        slider.appendChild(card);
+    });
+
+    // ここでカードが生成されてから計算する！
+    const cardsPerView = window.innerWidth < 768 ? 2 : 3;
+    totalGroups = Math.ceil(characters.length / cardsPerView);
+
+    // ドット生成
+    const dotsContainer = document.getElementById('dots');
+    dotsContainer.innerHTML = ''; // 初期化
+    for (let i = 0; i < totalGroups; i++) {
+        const dot = document.createElement('div');
+        dot.className = 'dot' + (i === 0 ? ' active' : '');
+        dotsContainer.appendChild(dot);
+    }
+
+    updateSlider();
+}
+
+// スライド更新関数
+function updateSlider() {
+    const offset = -currentIndex * 100;
+    slider.style.transform = `translateX(${offset}%)`;
+    document.querySelectorAll('.dot').forEach((dot, i) => {
+        dot.classList.toggle('active', i === currentIndex);
+    });
+}
+
+// ボタンイベント
+document.getElementById('prev').addEventListener('click', () => {
+    currentIndex = currentIndex > 0 ? currentIndex - 1 : totalGroups - 1;
+    updateSlider();
+});
+document.getElementById('next').addEventListener('click', () => {
+    currentIndex = (currentIndex + 1) % totalGroups;
+    updateSlider();
+});
+
+// ページ読み込み後に初期化
+window.addEventListener('load', initSlider);
+
+// リサイズ対応（リロードじゃなくて再計算するように改善！）
+window.addEventListener('resize', () => {
+    // 少し待ってから再初期化（スマホ回転とかで安定する）
+    clearTimeout(window.resizeTimer);
+    window.resizeTimer = setTimeout(() => {
+        currentIndex = 0;
+        initSlider();
+    }, 300);
+});
+
+// モーダル関数
 function openModal(id) {
     document.getElementById(id).classList.add('active');
 }
 function closeModal(id) {
     document.getElementById(id).classList.remove('active');
 }
-// モーダル外クリックで閉じる
 window.onclick = function(e) {
     if (e.target.classList.contains('modal')) {
         e.target.classList.remove('active');
