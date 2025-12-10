@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>OC図鑑</title>
+  <style>
+    :root {
+      --pink: #ffd1dc;
+      --mint: #a2ece3;
+      --lavender: #e0bbff;
+      --cream: #fff5e6;
+      --gray: #f0f0f0;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Helvetica Neue', sans-serif;
+      background: linear-gradient(135deg, var(--pink) 0%, var(--mint) 100%);
+      min-height: 100vh;
+      padding: 20px 10px;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      text-align: center;
+      color: white;
+      text-shadow: 0 3px 10px rgba(0,0,0,0.2);
+      margin-bottom: 30px;
+      font-size: 2.2rem;
+    }
+
+    .character-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr); /* スマホ */
+      gap: 20px;
+      padding: 10px;
+    }
+
+    @media (min-width: 768px) {
+      .character-grid {
+        grid-template-columns: repeat(5, 1fr); /* タブレット〜 */
+      }
+    }
+
+    .character-card {
+      background: white;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .character-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    }
+
+    .character-card img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+    }
+
+    .info {
+      padding: 15px;
+      text-align: center;
+    }
+
+    .name {
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 5px;
+    }
+
+    .title {
+      font-size: 0.9rem;
+      color: #888;
+    }
+
+    /* モーダル */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.7);
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 25px;
+      width: 90%;
+      max-width: 420px;
+      overflow: hidden;
+      animation: modalPop 0.4s ease;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+
+    @keyframes modalPop {
+      from { transform: scale(0.7); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .modal-header {
+      position: relative;
+      height: 250px;
+    }
+
+    .modal-header img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .close {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      font-size: 2rem;
+      color: white;
+      cursor: pointer;
+      text-shadow: 0 0 10px black;
+    }
+
+    .modal-body {
+      padding: 25px;
+    }
+
+    .modal-name {
+      font-size: 1.8rem;
+      color: #333;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    .modal-desc {
+      line-height: 1.7;
+      color: #555;
+      font-size: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>OC図鑑</h1>
+    <div class="character-grid" id="grid"></div>
+  </div>
+
+  <!-- モーダル -->
+  <div class="modal" id="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <img id="modalImg" src="" alt="">
+        <span class="close">&times;</span>
+      </div>
+      <div class="modal-body">
+        <h2 class="modal-name" id="modalName"></h2>
+        <p class="modal-desc" id="modalDesc"></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+
+    const characters = [
+      { name: "トモキ", title: "元気な男の子", img: "https://picsum.photos/300/400?random=1", desc: "太陽のようにいつも元気いっぱい。走り回るのが大好き。" },
+      { name: "ハルト", title: "クールな先輩", img: "https://picsum.photos/300/400?random=2", desc: "" },
+      { name: "ジュリアン", title: "お笑い好き", img: "https://picsum.photos/300/400?random=3", desc: "" },
+      { name: "セレナ", title: "癒し系お姉さん", img: "https://picsum.photos/300/400?random=4", desc: "" },
+      { name: "ハーティー", title: "小悪魔ちゃん", img: "https://picsum.photos/300/400?random=5", desc: "" },
+      // ここに100人でも200人でも追加OK！
+    ];
+
+    const grid = document.getElementById('grid');
+    const modal = document.getElementById('modal');
+    const modalImg = document.getElementById('modalImg');
+    const modalName = document.getElementById('modalName');
+    const modalDesc = document.getElementById('modalDesc');
+    const close = document.querySelector('.close');
+
+    // カード生成
+    characters.forEach(char => {
+      const card = document.createElement('div');
+      card.className = 'character-card';
+      card.innerHTML = `
+        <img src="${char.img}" alt="${char.name}">
+        <div class="info">
+          <div class="name">${char.name}</div>
+          <div class="title">${char.title}</div>
+        </div>
+      `;
+      card.onclick = () => {
+        modalImg.src = char.img;
+        modalName.textContent = char.name + "（" + char.title + "）";
+        modalDesc.textContent = char.desc;
+        modal.style.display = 'flex';
+      };
+      grid.appendChild(card);
+    });
+
+    // モーダル閉じる
+    close.onclick = () => modal.style.display = 'none';
+    modal.onclick = (e) => {
+      if (e.target === modal) modal.style.display = 'none';
+    };
+  </script>
+</body>
+</html>
