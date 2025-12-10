@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ゲームスタイル診断 - 16タイプ</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; background-color: #f0f0f0; }
+        h1, h2 { text-align: center; }
+        form { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        .question { margin-bottom: 20px; }
+        label { display: block; margin: 5px 0; }
+        button { display: block; margin: 20px auto; padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        #result { display: none; background: white; padding: 20px; border-radius: 10px; margin-top: 20px; text-align: center; }
+        #result img { max-width: 300px; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <h1>ゲームスタイル診断</h1>
+    <p>あなたのゲームの好みを4つの軸で診断！ 16タイプから、あなたにピッタリのスタイルを見つけよう。</p>
+    
+    <form id="quizForm">
+        <!-- 軸1: ひとりで ↔ みんなで (Solo: 負のスコア, Multi: 正のスコア) -->
+        <h2>軸1: ひとりで vs みんなで</h2>
+        <div class="question">
+            <p>ゲームをする時、誰かと一緒にやるのが好き？</p>
+            <label><input type="radio" name="q1" value="-1"> いや、一人で集中したい</label>
+            <label><input type="radio" name="q1" value="1"> うん、みんなとワイワイが楽しい</label>
+        </div>
+        <div class="question">
+            <p>オンラインゲームで、チームプレイは必須？</p>
+            <label><input type="radio" name="q2" value="-1"> いや、ソロで十分</label>
+            <label><input type="radio" name="q2" value="1"> そうだね、協力がワクワクする</label>
+        </div>
+        
+        <!-- 軸2: 考えるもの ↔ 遊ぶもの (Thinking: 負, Action: 正) -->
+        <h2>軸2: 考える vs 遊ぶ</h2>
+        <div class="question">
+            <p>パズルみたいに頭を使うゲームが好き？</p>
+            <label><input type="radio" name="q3" value="-1"> うん、じっくり考えたい</label>
+            <label><input type="radio" name="q3" value="1"> いや、アクションでサクサク進みたい</label>
+        </div>
+        <div class="question">
+            <p>ストラテジーゲーム vs アクションゲーム、どっち？</p>
+            <label><input type="radio" name="q4" value="-1"> ストラテジー、計画が楽しい</label>
+            <label><input type="radio" name="q4" value="1"> アクション、即興がいい</label>
+        </div>
+        
+        <!-- 軸3: 気軽に ↔ じっくり (Casual: 負, Deep: 正) -->
+        <h2>軸3: 気軽に vs じっくり</h2>
+        <div class="question">
+            <p>短時間で終わるゲームがいい？</p>
+            <label><input type="radio" name="q5" value="-1"> うん、気軽に遊びたい</label>
+            <label><input type="radio" name="q5" value="1"> いや、長く没頭したい</label>
+        </div>
+        <div class="question">
+            <p>RPGの長編ストーリーはどう？</p>
+            <label><input type="radio" name="q6" value="-1"> 短めがいい</label>
+            <label><input type="radio" name="q6" value="1"> 深いのが好き</label>
+        </div>
+        
+        <!-- 軸4: 勝負 ↔ 協力 (Competitive: 負, Coop: 正) -->
+        <h2>軸4: 勝負 vs 協力</h2>
+        <div class="question">
+            <p>対戦で勝つのが最高？</p>
+            <label><input type="radio" name="q7" value="-1"> うん、競争が燃える</label>
+            <label><input type="radio" name="q7" value="1"> いや、みんなで協力がいい</label>
+        </div>
+        <div class="question">
+            <p>ボードゲームで、勝ち負けにこだわる？</p>
+            <label><input type="radio" name="q8" value="-1"> こだわるよ</label>
+            <label><input type="radio" name="q8" value="1"> 協力プレイが楽しい</label>
+        </div>
+        
+        <button type="button" onclick="calculateResult()">診断する！</button>
+    </form>
+    
+    <div id="result">
+        <h2>あなたのゲームスタイルは...</h2>
+        <p id="typeDescription"></p>
+        <img id="typeImage" src="" alt="タイプ画像">
+    </div>
+    
+    <script>
+        function calculateResult() {
+            // 各軸のスコア計算 (質問2つずつなので、合計スコアで判定)
+            let axis1 = (parseInt(document.querySelector('input[name="q1"]:checked')?.value || 0) + 
+                         parseInt(document.querySelector('input[name="q2"]:checked')?.value || 0)) > 0 ? 'M' : 'S'; // Multi or Solo
+            let axis2 = (parseInt(document.querySelector('input[name="q3"]:checked')?.value || 0) + 
+                         parseInt(document.querySelector('input[name="q4"]:checked')?.value || 0)) > 0 ? 'A' : 'T'; // Action or Thinking
+            let axis3 = (parseInt(document.querySelector('input[name="q5"]:checked')?.value || 0) + 
+                         parseInt(document.querySelector('input[name="q6"]:checked')?.value || 0)) > 0 ? 'D' : 'C'; // Deep or Casual
+            let axis4 = (parseInt(document.querySelector('input[name="q7"]:checked')?.value || 0) + 
+                         parseInt(document.querySelector('input[name="q8"]:checked')?.value || 0)) > 0 ? 'O' : 'P'; // Coop (O for coOp) or comPetitive
+            
+            let type = axis1 + axis2 + axis3 + axis4; // e.g., 'STCP' みたいな4文字タイプ
+            
+            // 結果の説明と画像 (君が画像を用意するので、ファイル名をタイプ名に合わせて例: images/STCP.png)
+            let descriptions = {
+                'STCP': 'Solo Thinking Casual Competitive: 一人でパズルを競うように解くタイプ！',
+                'STCO': 'Solo Thinking Casual Coop: 一人で軽く協力要素を楽しむ…？ ユニーク！',
+                // ... 他の14タイプもここに追加。全部で16個。
+                // 例: 'MADP': 'Multi Action Deep Competitive: みんなで激しい対戦の深いゲーム好き！'
+                // 全部埋めてね。画像パスも 'images/' + type + '.png' で仮定。
+            };
+            
+            document.getElementById('typeDescription').innerText = descriptions[type] || '不明なタイプ… 質問全部答えてね！';
+            document.getElementById('typeImage').src = 'images/' + type + '.png'; // 君の画像パスに合わせて
+            document.getElementById('result').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
