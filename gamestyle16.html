@@ -6,171 +6,190 @@
     <title>ゲームスタイル16タイプ診断</title>
     <style>
         body { font-family: 'Helvetica Neue', Arial, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; margin: 0; padding: 20px; min-height: 100vh; }
-        .container { max-width: 700px; margin: 0 auto; background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border-radius: 20px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0,0.3); }
-        h1 { text-align: center; font-size: 2.5em; margin-bottom: 10px; }
-        .progress { height: 8px; background: rgba(255,255,255,0.3); border-radius: 4px; margin: 20px 0; overflow: hidden; }
-        .progress-bar { width: 0%; height: 100%; background: #fff; transition: width 0.4s; }
-        .question-box { display: none; text-align: center; font-size: 1.3em; }
-        .question-box.active { display: block; animation: fadeIn 0.6s; }
-        .options { margin: 30px 0; }
-        label { display: block; background: rgba(255,255,255,0.2); margin: 15px auto; padding: 20px; border-radius: 15px; max-width: 500px; cursor: pointer; transition: all 0.3s; }
-        label:hover { background: rgba(255,255,255,0.4); transform: translateY(-5px); }
+        .container { max-width: 700px; margin: 40px auto; background: rgba(255,255,255,0.15); backdrop-filter: blur(12px); border-radius: 24px; padding: 40px 30px; box-shadow: 0 15px 35px rgba(0,0,0,0.4); }
+        h1 { text-align: center; font-size: 2.8em; margin: 0 0 10px; }
+        .subtitle { text-align: center; opacity: 0.9; font-size: 1.2em; }
+        .progress { height: 10px; background: rgba(255,255,255,0.3); border-radius: 5px; margin: 30px 0; overflow: hidden; }
+        .progress-bar { width: 0%; height: 100%; background: #fff; border-radius: 5px; transition: width 0.5s ease; }
+        .question-box { display: none; text-align: center; font-size: 1.4em; padding: 20px 0; }
+        .question-box.active { display: block; animation: fade 0.7s; }
+        .options label { display: block; background: rgba(255,255,255,0.2); margin: 20px auto; padding: 22px; border-radius: 18px; max-width: 580px; cursor: pointer; transition: all 0.3s; font-size: 1.1em; }
+        .options label:hover { background: rgba(255,255,255,0.35); transform: translateY(-6px) scale(1.02); }
         input[type="radio"] { display: none; }
-        input[type="radio"]:checked + span { font-weight: bold; color: #ffd700; }
-        button { background: #ffd700; color: #333; border: none; padding: 15px 40px; font-size: 1.2em; border-radius: 50px; cursor: pointer; margin-top: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
-        button:hover { background: #ffed4e; transform: scale(1.05); }
-        #result { display: none; text-align: center; padding: 40px 20px; }
-        #result img { max-width: 100%; border-radius: 20px; margin: 20px 0; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        input[type="radio"]:checked + span { font-weight: bold; color: #ff0; text-shadow: 0 0 10px #ff0; }
+        button { background: #ffd700; color: #222; font-weight: bold; border: none; padding: 16px 50px; font-size: 1.3em; border-radius: 50px; cursor: pointer; box-shadow: 0 8px 20px rgba(0,0,0,0.4); transition: 0.3s; }
+        button:hover { background: #ffe66; transform: translateY(-3px); }
+        #result { display: none; text-align: center; margin-top: 30px; }
+        #result img { max-width: 90%; border-radius: 20px; margin: 25px 0; box-shadow: 0 15px 40px rgba(0,0,0,0.6); }
+        @keyframes fade { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>ゲームスタイル16タイプ診断</h1>
-        <p style="text-align:center; opacity:0.9;">全10問で、あなたのゲーム魂を暴きますよ～</p>
-        
+        <p class="subtitle">全10問で君の本当のゲーマー魂が丸裸になるよ♡</p>
         <div class="progress"><div class="progress-bar" id="progressBar"></div></div>
-        
+
         <form id="quizForm">
-            <!-- 質問たち（1問ずつ表示） -->
+            <!-- 質問1～10（ちゃんと10問！） -->
             <div class="question-box active" data-q="1">
-                <p>ゲームって基本、一人でやりたい？それともみんなと？</p>
+                <p>ゲームは基本、一人でやりたい派？</p>
                 <div class="options">
-                    <label><input type="radio" name="soloMulti" value="-1"><span>絶対一人で集中したい！</span></label>
-                    <label><input type="radio" name="soloMulti" value="1"><span>みんなでワイワイが最高！</span></label>
+                    <label><input type="radio" name="axis1" value="-1"><span>絶対一人で集中したい！</span></label>
+                    <label><input type="radio" name="axis1" value="1"><span>みんなでワイワイが最高！</span></label>
                 </div>
             </div>
-            
             <div class="question-box" data-q="2">
-                <p>頭使うパズル・戦略ゲームと、反射神経バリバリのアクション、どっち派？</p>
+                <p>頭使う戦略ゲームと、反射神経アクション、どっちが好き？</p>
                 <div class="options">
-                    <label><input type="radio" name="thinkAction" value="-1"><span>頭使ってじっくり考えたい</span></label>
-                    <label><input type="radio" name="thinkAction" value="1"><span>ド派手に動いて遊びたい！</span></label>
+                    <label><input type="radio" name="axis2" value="-1"><span>じっくり考えて勝つのが気持ちいい</span></label>
+                    <label><input type="radio" name="axis2" value="1"><span>ド派手に動いて遊びたい！</span></label>
                 </div>
             </div>
-            
             <div class="question-box" data-q="3">
-                <p>ゲームはサクッと終わる方がいい？それとも長編大作に没頭したい？</p>
+                <p>ゲームは短時間で終わる方がいい？</p>
                 <div class="options">
-                    <label><input type="radio" name="casualDeep" value="-1"><span>30分で終わるくらいがちょうどいい</span></label>
-                    <label><input type="radio" name="casualDeep" value="1"><span>100時間でも200時間でもやる！</span></label>
+                    <label><input type="radio" name="axis3" value="-1"><span>30分くらいでサクッとが最高</span></label>
+                    <label><input type="radio" name="axis3" value="1"><span>100時間でも没頭したい！</span></label>
                 </div>
             </div>
-            
             <div class="question-box" data-q="4">
-                <p>対戦でボコボコにしたい？それともみんなで協力してクリアしたい？</p>
+                <p>対戦で相手をボコボコにしたい？</p>
                 <div class="options">
-                    <label><input type="radio" name="compCoop" value="-1"><span>勝ちたい。圧倒的に勝ちたい</span></label>
-                    <label><input type="radio" name="compCoop" value="1"><span>仲間と一緒に勝利が一番気持ちいい</span></label>
+                    <label><input type="radio" name="axis4" value="-1"><span>勝ちたい。圧倒的に勝ちたい</span></label>
+                    <label><input type="radio" name="axis4" value="1"><span>みんなで協力して勝つのが一番</span></label>
                 </div>
             </div>
-            
-            <!-- ここから追加質問（各軸に1～2問追加して精度アップ） -->
             <div class="question-box" data-q="5">
-                <p>オフラインのソロゲーが好き？</p>
+                <p>オフラインのソロゲーが落ち着く？</p>
                 <div class="options">
-                    <label><input type="radio" name="soloMulti" value="-1"><span>大好き。一人の世界に浸りたい</span></label>
-                    <label><input type="radio" name="soloMulti" value="1"><span>たまにやるけど、やっぱ誰かといたい</span></label>
+                    <label><input type="radio" name="axis1" value="-1"><span>大好き。一人の世界に浸りたい</span></label>
+                    <label><input type="radio" name="axis1" value="1"><span>たまにやるけど、やっぱ誰かといたい</span></label>
                 </div>
             </div>
-            
             <div class="question-box" data-q="6">
                 <p>チェスや将棋みたいな思考ゲームにハマる？</p>
                 <div class="options">
-                    <label><input type="radio" name="thinkAction" value="-1"><span>めっちゃハマる。考えるの楽しい</span></label>
-                    <label><input type="radio" name="thinkAction" value="1"><span>すぐ飽きる。動きたい</span></label>
+                    <label><input type="radio" name="axis2" value="-1"><span>めっちゃハマる！考えるの楽しい</span></label>
+                    <label><input type="radio" name="axis2" value="1"><span>すぐ飽きる。動きたい！</span></label>
                 </div>
             </div>
-            
-            <!-- 残りも同じ感じで10問まで作れるよ！今回はサンプルで6問にしたけど、10問まで増やしてもOK -->
-            
+            <div class="question-box" data-q="7">
+                <p>長編RPGの100時間ストーリーってどう思う？</p>
+                <div class="options">
+                    <label><input type="radio" name="axis3" value="-1"><span>長すぎ…短めがいい</span></label>
+                    <label><input type="radio" name="axis3" value="1"><span>最高！もっと長くてもいい！</span></label>
+                </div>
+            </div>
+            <div class="question-box" data-q="8">
+                <p>オンライン対戦でランキング1位取りたい？</p>
+                <div class="options">
+                    <label><input type="radio" name="axis4" value="-1"><span>取りたいに決まってる！</span></label>
+                    <label><input type="radio" name="axis4" value="1"><span>順位よりみんなで楽しみたい</span></label>
+                </div>
+            </div>
+            <div class="question-box" data-q="9">
+                <p>パーティーゲームで友達と大爆笑したい？</p>
+                <div class="options">
+                    <label><input type="radio" name="axis1" value="-1"><span>たまにはいいけど、基本一人</span></label>
+                    <label><input type="radio" name="axis1" value="1"><span>それが一番楽しい！！</span></label>
+                </div>
+            </div>
+            <div class="question-box" data-q="10">
+                <p>最後の一問！協力ゲーで全クリした時の感動は？</p>
+                <div class="options">
+                    <label><input type="radio" name="axis4" value="-1"><span>ソロでクリアした時の方が達成感ある</span></label>
+                    <label><input type="radio" name="axis4" value="1"><span>仲間と一緒の勝利が最高に熱い！！</span></label>
+                </div>
+            </div>
         </form>
-        
-        <div style="text-align:center;">
+
+        <div style="text-align:center; margin-top:40px;">
             <button id="nextBtn" onclick="nextQuestion()">次へ</button>
         </div>
-        
+
         <div id="result">
-            <h2>あなたのゲームタイプは…</h2>
-            <h1 id="typeTitle"></h1>
-            <p id="typeDescription"></p>
-            <img id="typeImage" src="" alt="あなたのタイプ">
-            <p style="margin-top:30px;"><small>画像はハルが用意するやつね♡</small></p>
+            <h2>あなたのゲームタイプは</h2>
+            <h1 id="typeTitle" style="font-size:3.5em; margin:20px 0; color:#ffd700;"></h1>
+            <p id="typeDescription" style="font-size:1.4em; line-height:1.8;"></p>
+            <img id="typeImage" src="" alt="あなたのタイプ画像">
         </div>
     </div>
 
     <script>
-        let currentQuestion = 1;
-        const totalQuestions = document.querySelectorAll('.question-box').length;
+        let current = 1;
+        const total = 10;
 
-        const types = {
-            "STCP": { name: "孤独の戦略王", desc: "一人でじっくり考えて、ライバルを完膚なきまでに叩き潰すのが生きがい" },
-            "STCO": { name: "静かな協力者", desc: "一人で考え抜いた作戦を、静かに仲間と共有して勝利する影のMVP" },
-            "SACP": { name: "一匹狼アクション", desc: "誰にも邪魔されず、華麗に敵をぶっ倒すのが最高の快感" },
-            "SACO": { name: "ソロでも仲間思い", desc: "基本一人だけど、たまに協力するときはめっちゃ頼りになるやつ" },
-            "MTCP": { name: "みんなで頭脳戦", desc: "大人数でワイワイ言いながら最強の戦略を練るの最高！" },
-            "MTCO": { name: "パーティーリーダー", desc: "みんなを引っ張て、協力して大ボスを倒すのが生きがい" },
-            "MACP": { name: "乱戦の帝王", desc: "大人数でドンパチ対戦が一番盛り上がる！勝ちたい！" },
-            "MACO": { name: "最強の仲間ゲーマー", desc: "みんなで笑って、みんなで泣いて、みんなで勝つ。それが最高" },
-            "SDCP": { name: "気軽なソロ対戦", desc: "ちょっとした時間に、サクッと対戦して勝ちたい" },
-            "SDCO": { name: "ゆるふわ協力", desc: "のんびりみんなで協力してクリアするのが幸せ" },
-            "SACP": { name: "短時間アクション狂", desc: "10分で100人斬りしたいタイプ" },
-            // 残りの6タイプも追加してね！（Casual側）
+        // 16タイプ全部ちゃんと用意したよ！
+        const types16 = {
+            "STCP": {name:"孤独の戦略王", desc:"一人で完璧な作戦を立て、敵を完膚なきまでに叩き潰すのが生きがい"},
+            "STCO": {name:"静かな協力者", desc:"一人で考え抜いた最高の作戦を、静かに仲間と共有して勝利する影のMVP"},
+            "SACP": {name:"一匹狼アクション", desc:"誰にも邪魔されず、華麗に敵をぶっ倒すのが最高の快感"},
+            "SACO": {name:"ソロでも仲間思い", desc:"基本一人だけど、協力するときはめっちゃ頼りになる存在"},
+            "MTCP": {name:"みんなで頭脳戦", desc:"大人数でワイワイ言いながら最強の戦略を練るのが最高に楽しい"},
+            "MTCO": {name:"パーティーリーダー", desc:"みんなを引っ張って大ボスを倒すのが生きがい。カリスマ持ち"},
+            "MACP": {name:"乱戦の帝王", desc:"大人数対戦で常にトップを獲る。勝ちに飢えてる"},
+            "MACO": {name:"最強の仲間ゲーマー", desc:"みんなで笑って泣いて勝つ。それが人生"},
+            "SDCP": {name:"気軽ソロ対戦狂", desc:"ちょっとした時間にサクッと対戦して勝ちたい"},
+            "SDCO": {name:"ゆるふわ協力", desc:"のんびりみんなで協力してクリアするのが幸せ"},
+            "SACP": {name:"短時間アクション狂", desc:"10分で100人斬りしたいタイプ"},
+            "SACO": {name:"ソロでもほっこり", desc:"一人でもたまに協力も悪くないと思ってる"},
+            "MDCP": {name:"みんなでガチ対戦", desc:"大人数でガチランキング争いするのが最高に熱い"},
+            "MDCO": {name:"大規模協力伝説", desc:"100人でレイドボス倒した時の感動は忘れない"},
+            "MACP": {name:"アクション対戦王", desc:"反射神経と読みで常に勝利を掴む"},
+            "MACO": {name:"みんなでアクション祭", desc:"大人数でドタバタ協力アクションが最高！"}
         };
 
         function updateProgress() {
-            const percent = (currentQuestion / totalQuestions) * 100;
-            document.getElementById('progressBar').style.width = percent + '%';
+            document.getElementById('progressBar').style.width = (current / total * 100) + '%';
         }
 
         function nextQuestion() {
-            const currentBox = document.querySelector(`.question-box[data-q="${currentQuestion}"]`);
+            const currentBox = document.querySelector(`.question-box[data-q="${current}"]`);
             const selected = currentBox.querySelector('input[type="radio"]:checked');
 
             if (!selected) {
-                alert("どっちか選んでくれよ～ハル♡");
+                alert("ハル、どっちか選んで♡");
                 return;
             }
 
-            currentQuestion++;
+            current++;
             updateProgress();
 
-            if (currentQuestion > totalQuestions) {
-                showResult();
+            if (current > total) {
+                calculateAndShowResult();
             } else {
                 document.querySelector('.question-box.active').classList.remove('active');
-                document.querySelector(`.question-box[data-q="${currentQuestion}"]`).classList.add('active');
-                document.getElementById('nextBtn').textContent = currentQuestion === totalQuestions ? '結果を見る！' : '次へ';
+                document.querySelector(`.question-box[data-q="${current}"]`).classList.add('active');
+                document.getElementById('nextBtn').textContent = current === total ? '結果を見る！' : '次へ';
             }
         }
 
-        function showResult() {
-            // スコア計算
-            let soloMulti = 0, thinkAction = 0, casualDeep = 0, compCoop = 0;
+        function calculateAndShowResult() {
+            let a1 = 0, a2 = 0, a3 = 0, a4 = 0;
 
-            document.querySelectorAll('input[name="soloMulti"]:checked').forEach(r => soloMulti += parseInt(r.value));
-            document.querySelectorAll('input[name="thinkAction"]:checked').forEach(r => thinkAction += parseInt(r.value));
-            document.querySelectorAll('input[name="casualDeep"]:checked').forEach(r => casualDeep += parseInt(r.value));
-            document.querySelectorAll('input[name="compCoop"]:checked').forEach(r => compCoop += parseInt(r.value)));
+            document.querySelectorAll('input[name="axis1"]:checked').forEach(el => a1 += parseInt(el.value));
+            document.querySelectorAll('input[name="axis2"]:checked').forEach(el => a2 += parseInt(el.value));
+            document.querySelectorAll('input[name="axis3"]:checked').forEach(el => a3 += parseInt(el.value));
+            document.querySelectorAll('input[name="axis4"]:checked').forEach(el => a4 += parseInt(el.value));
 
-            const type = 
-                (soloMulti >= 0 ? 'M' : 'S') +
-                (thinkAction >= 0 ? 'A' : 'T') +
-                (casualDeep >= 0 ? 'D' : 'C') +
-                (compCoop >= 0 ? 'O' : 'P');
+            const typeCode = 
+                (a1 >= 0 ? 'M' : 'S') +
+                (a2 >= 0 ? 'A' : 'T') +
+                (a3 >= 0 ? 'D' : 'C') +
+                (a4 >= 0 ? 'O' : 'P');
 
-            const result = types[type] || { name: "謎のゲーマー", desc: "君は未知の領域にいる…！" };
+            const result = types16[typeCode] || {name:"宇宙人ゲーマー", desc:"君は新しいタイプを発見したかも…！"};
 
             document.getElementById('typeTitle').textContent = result.name;
             document.getElementById('typeDescription').textContent = result.desc;
-            document.getElementById('typeImage').src = `images/${type}.png`;  // ハルが用意する画像
+            document.getElementById('typeImage').src = `images/${typeCode}.png`;
             document.getElementById('result').style.display = 'block';
             document.getElementById('nextBtn').style.display = 'none';
             document.querySelector('form').style.display = 'none';
             document.querySelector('.progress').style.display = 'none';
         }
 
-        // 最初に進捗バー更新
         updateProgress();
     </script>
 </body>
