@@ -39,83 +39,104 @@
         backdrop-filter: blur(5px);
     }
 
-    /* スライダー全体 */
-    .slider-container {
-        position: relative;
-        overflow: hidden;
-        border-radius: 25px;
-        box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-        background: white;
-        margin-bottom: 30px;
+    /* グリッド：常に2列（スマホもPCも） */
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 30px;
+        padding: 0 20px;
+        max-width: 900px;
+        margin: 0 auto;
     }
-    .slider {
-        display: flex;
-        transition: transform 0.5s cubic-bezier(0.7, 0, 0.3, 1);
-        touch-action: pan-x;
+    @media (max-width: 560px) {
+        .grid { gap: 20px; padding: 0 10px; }
     }
+
     .card {
-        min-width: 50vw; /* スマホでは常に2列表示 */
-        padding: 15px;
-        user-select: none;
-    }
-    @media (min-width: 768px) {
-        .card { min-width: 33.333%; } /* PCでは3列 */
-    }
-    .card-inner {
         background: white;
         border-radius: 25px;
         overflow: hidden;
         box-shadow: 0 12px 30px rgba(0,0,0,0.12);
         cursor: pointer;
         transition: all 0.4s;
-        border: 3px solid transparent;
-        background-clip: padding-box;
         position: relative;
     }
-    .card-inner::before {
+    .card::before {
         content: '';
         position: absolute;
-        inset: -3px;
-        border-radius: 28px;
-        padding: 3px;
+        inset: -4px;
+        border-radius: 29px;
         background: linear-gradient(45deg, #ff8fab, #a0c4ff, #ffd1a4);
-        -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
-        -webkit-mask-composite: xor;
-        mask-composite: exclude;
         opacity: 0;
         transition: opacity 0.4s;
         z-index: -1;
     }
-    .card:hover .card-inner::before,
-    .card:active .card-inner::before {
-        opacity: 1;
-    }
+    .card:hover::before { opacity: 1; }
     .card:hover {
-        transform: translateY(-12px) scale(1.02);
+        transform: translateY(-12px) scale(1.03);
     }
     .card img {
         width: 100%;
         height: 280px;
         object-fit: cover;
-        border-bottom: 4px solid #ffeef8;
+        border-bottom: 5px solid #ffeef8;
     }
     .card-info {
-        padding: 20px 15px 25px;
+        padding: 22px 15px 28px;
         background: linear-gradient(to top, #fff8fb, white);
     }
     .card-name {
-        font-size: 1.65rem;
+        font-size: 1.7rem;
         color: #ff8fab;
         margin: 0 0 6px;
         font-weight: bold;
     }
     .card-role {
         font-size: 1rem;
-        color: #b0b0b0;
+        color: #b6b6b6;
     }
 
-    /* 矢印ボタン */
-    .nav-btn {
+    /* モーダル */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 100;
+        left: 0; top: 0;
+        width: 100%; height: 100%;
+        background: rgba(0,0,0,0.65);
+        align-items: center;
+        justify-content: center;
+    }
+    .modal.active { display: flex; }
+    .modal-content {
+        background: white;
+        border-radius: 30px;
+        max-width: 500px;
+        width: 90%;
+        max-height: 90vh;
+        overflow: hidden;
+        position: relative;
+        box-shadow: 0 25px 60px rgba(0,0,0,0.3);
+        border: 6px solid transparent;
+        background: linear-gradient(white, white) padding-box,
+                    linear-gradient(45deg, #ff8fab, #a0c4ff) border-box;
+    }
+    .close {
+        position: absolute;
+        top: -15px; right: -15px;
+        width: 44px; height: 44px;
+        background: #ffeef8;
+        color: #ff8fab;
+        border-radius: 50%;
+        font-size: 2rem;
+        line-height: 40px;
+        cursor: pointer;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+        z-index: 10;
+    }
+
+    /* モーダル内矢印 */
+    .nav-arrow {
         position: absolute;
         top: 50%;
         transform: translateY(-50%);
@@ -125,54 +146,45 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 2rem;
+        font-size: 2.2rem;
         color: #ff8fab;
-        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
         cursor: pointer;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.2);
         z-index: 10;
-        user-select: none;
         transition: all 0.3s;
     }
-    .nav-btn:hover {
-        transform: translateY(-50%) scale(1.15);
+    .nav-arrow:hover {
         background: #ff8fab;
         color: white;
+        transform: translateY(-50%) scale(1.2);
     }
-    .prev { left: 15px; }
-    .next { right: 15px; }
+    .nav-prev { left: 15px; }
+    .nav-next { right: 15px; }
 
-    /* ドットインジケーター */
-    .dots {
-        display: flex;
-        justify-content: center;
-        gap: 10px;
-        margin-top: 15px;
+    .profile {
+        text-align: center;
+        padding: 50px 30px 40px;
     }
-    .dot {
-        width: 10px; height: 10px;
+    .profile img {
+        width: 200px;
+        height: 200px;
         border-radius: 50%;
-        background: #ddd;
-        transition: all 0.3s;
+        border: 10px solid #ffeef8;
+        object-fit: cover;
     }
-    .dot.active {
-        background: #ff8fab;
-        transform: scale(1.4);
+    .profile h2 {
+        margin: 25px 0 15px;
+        font-size: 2.4rem;
+        color: #ff8fab;
     }
-
-    /* モーダル少し可愛く */
-    .modal-content {
-        border: 5px solid transparent;
-        background: linear-gradient(white, white) padding-box,
-                    linear-gradient(45deg, #ff8fab, #a0c4ff) border-box;
-    }
-    .close {
-        width: 40px; height: 40px;
+    .tag {
+        display: inline-block;
         background: #ffeef8;
-        border-radius: 50%;
-        line-height: 36px;
-        font-size: 1.8rem;
-        top: -15px; right: -15px;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        color: #ff8fab;
+        padding: 6px 14px;
+        border-radius: 25px;
+        font-size: 0.95rem;
+        margin: 6px;
     }
 </style>
 </head>
@@ -186,185 +198,87 @@
         あなたの心を揺れ動かします。
     </div>
 
-    <!-- スライダー -->
-    <div class="slider-container">
-        <div class="slider" id="slider">
-            <!-- ここにカードがJSで入る -->
-        </div>
-
-        <div class="nav-btn prev" id="prev">‹</div>
-        <div class="nav-btn next" id="next">›</div>
-    </div>
-
-    <div class="dots" id="dots"></div>
-</div>
-
-<!-- モーダルたち -->
-<div id="modal1" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeModal('modal1')">×</span>
-        <div class="profile">
+    <!-- 常に2列グリッド -->
+    <div class="grid">
+        <div class="card" onclick="openModal(0)">
             <img src="img/rinon.jpeg" alt="りのん">
-            <h2>桜井 莉音</h2>
-            <p>女子力高い女子高生。<br>シール交換が趣味。<br>育成ゲームで常にペットを育てている。</p>
-            <div><span class="tag">ISFJ</span><span class="tag">2w1</span></div>
+            <div class="card-info"><h3 class="card-name">りのん</h3><p class="card-role">Rinon</p></div>
         </div>
-    </div>
-</div>
-
-<div id="modal2" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeModal('modal2')">×</span>
-        <div class="profile">
+        <div class="card" onclick="openModal(1)">
             <img src="img/mashiro.jpeg" alt="ましろ">
-            <h2>星川 茉白</h2>
-            <p>優しいほのぼの女子高生。<br>甘いお菓子をたべることが大好き。<br>仲間思いでみんなに優しい。</p>
-            <div><span class="tag">INFP</span><span class="tag">9w1</span></div>
+            <div class="card-info"><h3 class="card-name">ましろ</h3><p class="card-role">Mashiro</p></div>
         </div>
-    </div>
-</div>
-
-<div id="modal3" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeModal('modal3')">×</span>
-        <div class="profile">
+        <div class="card" onclick="openModal(2)">
             <img src="img/nana.jpeg" alt="なな">
-            <h2>夏目 菜々</h2>
-            <p>プライド高い女子高生。<br>自信家で負けず嫌い。<br>いつもツンツンしてるけど時々デレが…？。</p>
-            <div><span class="tag">ESTJ</span><span class="tag">3w2</span></div>
+            <div class="card-info"><h3 class="card-name">なな</h3><p class="card-role">Nana</p></div>
         </div>
-    </div>
-</div>
-
-<div id="modal4" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeModal('modal4')">×</span>
-        <div class="profile">
+        <div class="card" onclick="openModal(3)">
             <img src="img/yua.jpeg" alt="ゆあ">
-            <h2>美里 ゆあ</h2>
-            <p>元気な女子高生。<br>アニメが大好きで、お絵描きライブ配信をしている。<br>好奇心旺盛で流行りにすぐに乗っかる。</p>
-            <div><span class="tag">ESFP</span><span class="tag">7w6</span></div>
+            <div class="card-info"><h3 class="card-name">ゆあ</h3><p class="card-role">Yua</p></div>
         </div>
-    </div>
-</div>
-
-<div id="modal5" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeModal('modal5')">×</span>
-        <div class="profile">
+        <div class="card" onclick="openModal(4)">
             <img src="img/hibiki.jpeg" alt="ひびき">
-            <h2>富河 響</h2>
-            <p>大人しい女子高生。<br>常にぼーっとしてる不思議ちゃん。<br>和服を着るのが趣味。</p>
-            <div><span class="tag">ISFP</span><span class="tag">4w5</span></div>
+            <div class="card-info"><h3 class="card-name">ひびき</h3><p class="card-role">Hibiki</p></div>
+        </div>
+        <div class="card" onclick="openModal(5)">
+            <img src="img/ham.jpeg" alt="ハム">
+            <div class="card-info"><h3 class="card-name">ハム</h3><p class="card-role">Ham</p></div>
         </div>
     </div>
 </div>
 
-<div id="modal6" class="modal">
+<!-- モーダル（1つだけにしてJSで内容を切り替え） -->
+<div id="characterModal" class="modal">
     <div class="modal-content">
-        <span class="close" onclick="closeModal('modal6')">×</span>
-        <div class="profile">
-            <img src="img/ham.jpeg" alt="ハム">
-            <h2>ハムりんご</h2>
-            <p>リンゴ好きのハムスター。<br>みんなに可愛がられている。<br>心の中では登場人物を分析しがち。</p>
-            <div><span class="tag">INTP</span><span class="tag">5w4</span></div>
+        <span class="close" onclick="closeModal()">×</span>
+        <div class="nav-arrow nav-prev" onclick="changeCharacter(-1)">‹</div>
+        <div class="nav-arrow nav-next" onclick="changeCharacter(1)">›</div>
+        <div class="profile" id="modalBody">
+            <!-- JSでここに内容が入る -->
         </div>
     </div>
 </div>
 
 <script>
-// キャラクターデータ
 const characters = [
-    {id: "modal1", name: "りのん", role: "Rinon", img: "img/rinon.jpeg"},
-    {id: "modal2", name: "ましろ", role: "Mashiro", img: "img/mashiro.jpeg"},
-    {id: "modal3", name: "なな", role: "Nana", img: "img/nana.jpeg"},
-    {id: "modal4", name: "ゆあ", role: "Yua", img: "img/yua.jpeg"},
-    {id: "modal5", name: "ひびき", role: "Hibiki", img: "img/hibiki.jpeg"},
-    {id: "modal6", name: "ハム", role: "Ham", img: "img/ham.jpeg"}
+    {name: "桜井 莉音", nickname: "りのん", img: "img/rinon.jpeg", desc: "女子力高い女子高生。<br>シール交換が趣味。<br>育成ゲームで常にペットを育てている。", tag1: "ISFJ", tag2: "2w1"},
+    {name: "星川 茉白", nickname: "ましろ", img: "img/mashiro.jpeg", desc: "優しいほのぼの女子高生。<br>甘いお菓子をたべることが大好き。<br>仲間思いでみんなに優しい。", tag1: "INFP", tag2: "9w1"},
+    {name: "夏目 菜々", nickname: "なな", img: "img/nana.jpeg", desc: "プライド高い女子高生。<br>自信家で負けず嫌い。<br>いつもツンツンしてるけど時々デレが…？。", tag1: "ESTJ", tag2: "3w2"},
+    {name: "美里 ゆあ", nickname: "ゆあ", img: "img/yua.jpeg", desc: "元気な女子高生。<br>アニメが大好きで、お絵描きライブ配信をしている。<br>好奇心旺盛で流行りにすぐに乗っかる。", tag1: "ESFP", tag2: "7w6"},
+    {name: "富河 響", nickname: "ひびき", img: "img/hibiki.jpeg", desc: "大人しい女子高生。<br>常にぼーっとしてる不思議ちゃん。<br>和服を着るのが趣味。", tag1: "ISFP", tag2: "4w5"},
+    {name: "ハムりんご", nickname: "ハム", img: "img/ham.jpeg", desc: "リンゴ好きのハムスター。<br>みんなに可愛がられている。<br>心の中では登場人物を分析しがち。", tag1: "INTP", tag2: "5w4"}
 ];
 
-const slider = document.getElementById('slider');
-let currentIndex = 0;
-let totalGroups = 1;
+let currentChar = 0;
 
-// カード生成後に実行されるように関数化
-function initSlider() {
-    // カード生成
-    characters.forEach(char => {
-        const card = document.createElement('div');
-        card.className = 'card';
-        card.onclick = () => openModal(char.id);
-        card.innerHTML = `
-            <div class="card-inner">
-                <img src="${char.img}" alt="${char.name}">
-                <div class="card-info">
-                    <h3 class="card-name">${char.name}</h3>
-                    <p class="card-role">${char.role}</p>
-                </div>
-            </div>
-        `;
-        slider.appendChild(card);
-    });
-
-    // ここでカードが生成されてから計算する！
-    const cardsPerView = window.innerWidth < 768 ? 2 : 3;
-    totalGroups = Math.ceil(characters.length / cardsPerView);
-
-    // ドット生成
-    const dotsContainer = document.getElementById('dots');
-    dotsContainer.innerHTML = ''; // 初期化
-    for (let i = 0; i < totalGroups; i++) {
-        const dot = document.createElement('div');
-        dot.className = 'dot' + (i === 0 ? ' active' : '');
-        dotsContainer.appendChild(dot);
-    }
-
-    updateSlider();
+function openModal(index) {
+    currentChar = index;
+    updateModal();
+    document.getElementById("characterModal").classList.add("active");
 }
 
-// スライド更新関数
-function updateSlider() {
-    const offset = -currentIndex * 100;
-    slider.style.transform = `translateX(${offset}%)`;
-    document.querySelectorAll('.dot').forEach((dot, i) => {
-        dot.classList.toggle('active', i === currentIndex);
-    });
+function closeModal() {
+    document.getElementById("characterModal").classList.remove("active");
 }
 
-// ボタンイベント
-document.getElementById('prev').addEventListener('click', () => {
-    currentIndex = currentIndex > 0 ? currentIndex - 1 : totalGroups - 1;
-    updateSlider();
-});
-document.getElementById('next').addEventListener('click', () => {
-    currentIndex = (currentIndex + 1) % totalGroups;
-    updateSlider();
-});
-
-// ページ読み込み後に初期化
-window.addEventListener('load', initSlider);
-
-// リサイズ対応（リロードじゃなくて再計算するように改善！）
-window.addEventListener('resize', () => {
-    // 少し待ってから再初期化（スマホ回転とかで安定する）
-    clearTimeout(window.resizeTimer);
-    window.resizeTimer = setTimeout(() => {
-        currentIndex = 0;
-        initSlider();
-    }, 300);
-});
-
-// モーダル関数
-function openModal(id) {
-    document.getElementById(id).classList.add('active');
+function changeCharacter(direction) {
+    currentChar = (currentChar + direction + characters.length) % characters.length;
+    updateModal();
 }
-function closeModal(id) {
-    document.getElementById(id).classList.remove('active');
+
+function updateModal() {
+    const c = characters[currentChar];
+    document.getElementById("modalBody").innerHTML = `
+        <img src="${c.img}" alt="${c.nickname}">
+        <h2>${c.name}</h2>
+        <p>${c.desc}</p>
+        <div><span class="tag">${c.tag1}</span><span class="tag">${c.tag2}</span></div>
+    `;
 }
+
+// 外クリックで閉じる
 window.onclick = function(e) {
-    if (e.target.classList.contains('modal')) {
-        e.target.classList.remove('active');
-    }
+    if (e.target.classList.contains('modal')) closeModal();
 }
 </script>
 </body>
