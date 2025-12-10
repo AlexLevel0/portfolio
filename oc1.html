@@ -214,7 +214,7 @@
         margin: 6px;
     }
 
-    /* --- リンゴの落下アニメ背景 --- */
+/* --- リンゴの落下アニメ背景 --- */
 .apple {
     position: fixed;
     top: -50px;
@@ -224,16 +224,14 @@
     border-radius: 50%;
     pointer-events: none;
     opacity: 0.85;
-    animation: fall linear infinite, spin ease-in-out infinite;
+    animation-name: fall, spin;
+    animation-timing-function: linear, ease-in-out;
+    animation-iteration-count: infinite, infinite;
 }
-
-/* 落下 */
 @keyframes fall {
     0% { transform: translateY(-50px); }
     100% { transform: translateY(110vh); }
 }
-
-/* 転がり（回転） */
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
@@ -344,33 +342,31 @@ document.addEventListener('selectstart', e => e.preventDefault());
 document.addEventListener('dragstart', e => e.preventDefault());
 
 
-// --- りんごをランダム生成して落下させる ---
 function createApple() {
-    const apple = document.createElement('div');
-    apple.classList.add('apple');
+    const apple = document.createElement("div");
+    apple.className = "apple";
 
     // ランダム位置
     apple.style.left = Math.random() * 100 + "vw";
 
-    // 落下速度ランダム
-    const fallDuration = 4 + Math.random() * 6;
-    apple.style.animationDuration = fallDuration + "s, " + (2 + Math.random() * 3) + "s";
-
-    // サイズ variation
+    // ランダムサイズ
     const size = 15 + Math.random() * 20;
     apple.style.width = size + "px";
     apple.style.height = size + "px";
 
-    // 若干傾き
-    apple.style.transform = `rotate(${Math.random() * 360}deg)`;
+    // アニメーション時間（複数アニメ書式が超大事！）
+    const fallDuration = 4 + Math.random() * 6;
+    const spinDuration = 2 + Math.random() * 3;
+
+    apple.style.animationDuration = `${fallDuration}s, ${spinDuration}s`;
 
     document.body.appendChild(apple);
 
-    // 画面外に行ったら消す
+    // 消去
     setTimeout(() => apple.remove(), fallDuration * 1000);
 }
 
-// 定期的に量産！
+// ここがりんご製造マシーン
 setInterval(createApple, 350);
     
 </script>
