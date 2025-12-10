@@ -64,18 +64,27 @@
             padding: 20px;
         }
         .modal.show { display: flex; }
+        
+        /* ←ここを大幅改善 */
         .modal-content {
             position: relative;
             background: white;
             border-radius: 20px;
-            max-width: 400px;
+            max-width: 420px;
             width: 100%;
+            max-height: 90vh;           /* 画面高さの90%まで */
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
             animation: modalIn 0.4s ease-out;
+        }
+        .modal-body {
+            overflow-y: auto;           /* ここでスクロール可能に */
+            flex: 1;
         }
         @keyframes modalIn { from {transform:scale(0.8);opacity:0;} to {transform:scale(1);opacity:1;} }
 
-        /* 表モード（青空） */
+        /* 表モード */
         .normal .modal-bg {
             background: linear-gradient(to bottom, #87CEEB, #B0E0E6);
         }
@@ -85,9 +94,8 @@
             color: #333;
         }
         .normal h2 { font-size: 1.8rem; margin-bottom: 10px; }
-        .normal p { line-height: 1.6; margin-bottom: 12px; }
 
-        /* 裏モード（ホラー） */
+        /* 裏モード */
         .secret {
             background: #111 !important;
             color: #ccc;
@@ -96,7 +104,7 @@
             background: linear-gradient(to bottom, #000, #300000);
         }
         .secret .profile-img {
-            object-fit: cover; width:100%; height:280px; filter: grayscale(100%) brightness(0.6) contrast(1.4);
+            filter: grayscale(100%) brightness(0.6) contrast(1.4);
         }
         .secret .info { color: #ff6666; }
         .secret h2 { color: #ff3333; text-shadow: 0 0 10px #900; }
@@ -113,9 +121,7 @@
             font-size: 0.9rem;
             z-index: 10;
         }
-        .secret .toggle-btn {
-            background: #900;
-        }
+        .secret .toggle-btn { background: #900; }
         .close {
             position: absolute;
             top: 15px; left: 15px;
@@ -202,17 +208,20 @@
             <div class="modal-bg">
                 <img class="profile-img" id="modalImg" src="" alt="">
             </div>
-            <div class="info">
-                <h2 id="modalName"></h2>
-                <p><strong>年齢：</strong><span id="age"></span></p>
-                <p><strong>誕生日：</strong><span id="birth"></span></p>
-                <p><strong>好きなもの：</strong><span id="like"></span></p>
-                <p><strong>一言：</strong><span id="word"></span></p>
-                
-                <!-- 裏設定（最初は非表示） -->
-                <div id="secretInfo" style="display:none; margin-top:20px; padding-top:20px; border-top:1px dashed #666;">
-                    <p style="color:#ff3333;"><strong>【裏設定】</strong></p>
-                    <p id="secretText"></p>
+
+            <!-- ここを .modal-body で囲ってスクロール対応 -->
+            <div class="modal-body">
+                <div class="info">
+                    <h2 id="modalName"></h2>
+                    <p><strong>年齢：</strong><span id="age"></span></p>
+                    <p><strong>誕生日：</strong><span id="birth"></span></p>
+                    <p><strong>好きなもの：</strong><span id="like"></span></p>
+                    <p><strong>一言：</strong><span id="word"></span></p>
+                    
+                    <div id="secretInfo" style="display:none; margin-top:20px; padding-top:20px; border-top:1px dashed #666;">
+                        <p style="color:#ff3333;"><strong>【裏設定】</strong></p>
+                        <p id="secretText"></p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -337,7 +346,12 @@
 
         function openModal(index) {
             current = index;
+            // 開くたびに表モードに強制リセット
             isSecret = false;
+            document.getElementById("modalContent").className = "modal-content normal";
+            document.getElementById("toggleBtn").textContent = "?????";
+            document.getElementById("secretInfo").style.display = "none";
+
             updateModal();
             document.getElementById("modal").classList.add("show");
             document.body.style.overflow = "hidden";
@@ -346,6 +360,8 @@
         function closeModal() {
             document.getElementById("modal").classList.remove("show");
             document.body.style.overflow = "";
+            // 閉じた瞬間に裏設定もリセット（次開くとき確実に表から）
+            isSecret = false;
         }
 
         function toggleSecret() {
@@ -378,7 +394,6 @@
             document.getElementById("modalImg").src = isSecret ? c.horrorImg : c.img;
         }
 
-        // モーダル外クリックで閉じる
         window.onclick = function(e) {
             if (e.target === document.getElementById("modal")) {
                 closeModal();
