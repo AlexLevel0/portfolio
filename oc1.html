@@ -223,28 +223,22 @@
     background: radial-gradient(circle at 30% 30%, #ff4d4d, #cc0000);
     border-radius: 50%;
     pointer-events: none;
-    opacity: 0.85;
-    animation-name: fall, spin;
-    animation-timing-function: linear, ease-in-out;
-    animation-iteration-count: infinite, infinite;
+    opacity: 0.9;
+
+    animation: fall linear infinite,
+               spinfilter linear infinite;
 }
+
+/* 落下（位置アニメ） */
 @keyframes fall {
     0% { transform: translateY(-50px); }
     100% { transform: translateY(110vh); }
 }
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
 
-/* ヘッダー画像（好きな画像に差し替えOK） */
-.header-image {
-    width: 100%;
-    max-height: 250px;
-    object-fit: cover;
-    border-radius: 20px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-    margin-bottom: 25px;
+/* 回転っぽい色変化（transform使わない） */
+@keyframes spinfilter {
+    0% { filter: hue-rotate(0deg); }
+    100% { filter: hue-rotate(360deg); }
 }
 </style>
 </head>
@@ -350,23 +344,23 @@ function createApple() {
     apple.style.left = Math.random() * 100 + "vw";
 
     // ランダムサイズ
-    const size = 15 + Math.random() * 20;
+    const size = 15 + Math.random() * 25;
     apple.style.width = size + "px";
     apple.style.height = size + "px";
 
-    // アニメーション時間（複数アニメ書式が超大事！）
+    // アニメ速度
     const fallDuration = 4 + Math.random() * 6;
-    const spinDuration = 2 + Math.random() * 3;
+    const spinDuration = 2 + Math.random() * 4;
 
     apple.style.animationDuration = `${fallDuration}s, ${spinDuration}s`;
 
     document.body.appendChild(apple);
 
-    // 消去
+    // 消えるタイミング
     setTimeout(() => apple.remove(), fallDuration * 1000);
 }
 
-// ここがりんご製造マシーン
+// 量産工場
 setInterval(createApple, 350);
     
 </script>
