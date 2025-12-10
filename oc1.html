@@ -15,11 +15,14 @@
         padding: 20px 0;
         color: #5c5470;
         overflow-x: hidden;
+        user-select: none; /* 全体の文字選択も少し抑制 */
     }
     .container {
-        max-width: 1000px;
+        max-width: 1100px;
         margin: 0 auto;
         text-align: center;
+        position: relative;
+        z-index: 1;
     }
     h1 {
         font-family: 'M PLUS Rounded 1c', sans-serif;
@@ -39,14 +42,20 @@
         backdrop-filter: blur(5px);
     }
 
-    /* グリッド：常に2列（スマホもPCも） */
+    /* グリッド：スマホ2列 → 768px以上で3列 */
     .grid {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
-        gap: 30px;
+        gap: 32px;
         padding: 0 20px;
-        max-width: 900px;
+        max-width: 1000px;
         margin: 0 auto;
+    }
+    @media (min-width: 768px) {
+        .grid {
+            grid-template-columns: repeat(3, 1fr);
+            gap: 35px;
+        }
     }
     @media (max-width: 560px) {
         .grid { gap: 20px; padding: 0 10px; }
@@ -80,6 +89,9 @@
         height: 280px;
         object-fit: cover;
         border-bottom: 5px solid #ffeef8;
+        pointer-events: none;           /* 画像の右クリック・長押し無効 */
+        -webkit-user-drag: none;        /* Safariドラッグ防止 */
+        user-drag: none;
     }
     .card-info {
         padding: 22px 15px 28px;
@@ -96,11 +108,27 @@
         color: #b6b6b6;
     }
 
-    /* モーダル */
+    /* コピーライト透かし */
+    .copyright {
+        position: fixed;
+        right: 15px;
+        bottom: 15px;
+        font-size: 0.85rem;
+        color: rgba(255, 255, 255, 0.4);
+        background: rgba(0,0,0,0.15);
+        padding: 6px 12px;
+        border-radius: 15px;
+        backdrop-filter: blur(4px);
+        z-index: 999;
+        pointer-events: none;
+        font-family: 'Kosugi Maru', sans-serif;
+    }
+
+    /* モーダル（前回と同じ） */
     .modal {
         display: none;
         position: fixed;
-        z-index: 100;
+        z-index: 1000;
         left: 0; top: 0;
         width: 100%; height: 100%;
         background: rgba(0,0,0,0.65);
@@ -134,8 +162,6 @@
         box-shadow: 0 6px 20px rgba(0,0,0,0.2);
         z-index: 10;
     }
-
-    /* モーダル内矢印 */
     .nav-arrow {
         position: absolute;
         top: 50%;
@@ -171,6 +197,7 @@
         border-radius: 50%;
         border: 10px solid #ffeef8;
         object-fit: cover;
+        pointer-events: none;
     }
     .profile h2 {
         margin: 25px 0 15px;
@@ -195,10 +222,9 @@
     <div class="intro">
         女子高生とハムスターの可愛い日常ストーリーです。<br>
         癒されるほのぼのシーンや、クスッと笑えるシーンまで。<br>
-        あなたの心を揺れ動かします。
+        あなたの心を揺れ動かします
     </div>
 
-    <!-- 常に2列グリッド -->
     <div class="grid">
         <div class="card" onclick="openModal(0)">
             <img src="img/rinon.jpeg" alt="りのん">
@@ -227,15 +253,16 @@
     </div>
 </div>
 
-<!-- モーダル（1つだけにしてJSで内容を切り替え） -->
+<!-- コピーライト透かし -->
+<div class="copyright">© 2025 Lane</div>
+
+<!-- モーダル（1つだけ） -->
 <div id="characterModal" class="modal">
     <div class="modal-content">
         <span class="close" onclick="closeModal()">×</span>
         <div class="nav-arrow nav-prev" onclick="changeCharacter(-1)">‹</div>
         <div class="nav-arrow nav-next" onclick="changeCharacter(1)">›</div>
-        <div class="profile" id="modalBody">
-            <!-- JSでここに内容が入る -->
-        </div>
+        <div class="profile" id="modalBody"></div>
     </div>
 </div>
 
@@ -256,16 +283,13 @@ function openModal(index) {
     updateModal();
     document.getElementById("characterModal").classList.add("active");
 }
-
 function closeModal() {
     document.getElementById("characterModal").classList.remove("active");
 }
-
-function changeCharacter(direction) {
-    currentChar = (currentChar + direction + characters.length) % characters.length;
+function changeCharacter(dir) {
+    currentChar = (currentChar + dir + characters.length) % characters.length;
     updateModal();
 }
-
 function updateModal() {
     const c = characters[currentChar];
     document.getElementById("modalBody").innerHTML = `
@@ -275,11 +299,12 @@ function updateModal() {
         <div><span class="tag">${c.tag1}</span><span class="tag">${c.tag2}</span></div>
     `;
 }
+window.onclick = e => { if (e.target.classList.contains('modal')) closeModal(); }
 
-// 外クリックで閉じる
-window.onclick = function(e) {
-    if (e.target.classList.contains('modal')) closeModal();
-}
+// 画像保存対策（右クリック・長押し・ドラッグ全部ブロック）
+document.addEventListener('contextmenu', e => e.preventDefault());
+document.addEventListener('selectstart', e => e.preventDefault());
+document.addEventListener('dragstart', e => e.preventDefault());
 </script>
 </body>
 </html>
