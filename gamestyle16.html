@@ -109,12 +109,15 @@
             <button id="nextBtn" onclick="nextQuestion()">次へ</button>
         </div>
 
-        <div id="result">
-            <h2>あなたのゲームタイプは</h2>
-            <h1 id="typeTitle" style="font-size:3.5em; margin:20px 0; color:#ffd700;"></h1>
-            <p id="typeDescription" style="font-size:1.4em; line-height:1.8;"></p>
-            <img id="typeImage" src="" alt="あなたのタイプ画像">
-        </div>
+        <!-- 結果部分のHTML（ここだけ差し替え） -->
+<div id="result">
+    <h2>あなたのゲームタイプは</h2>
+    <h1 id="typeCode" style="font-size:2.5em; margin:10px 0; color:#ff0; letter-spacing:4px;"></h1>  <!-- ← 新追加 -->
+    <h1 id="typeTitle" style="font-size:3.5em; margin:20px 0; color:#ffd700;"></h1>
+    <p id="typeDescription" style="font-size:1.4em; line-height:1.8;"></p>
+    <img id="typeImage" src="" alt="あなたのタイプ画像">
+</div>
+
     </div>
 
     <script>
@@ -189,11 +192,13 @@
     (a3 >= 0 ? 'D' : 'C') +
     (a4 >= 0 ? 'O' : 'P');
 
-            const result = types16[typeCode] || fallback;
+            // calculateAndShowResult() の中の結果表示部分をこれに変更
+const result = types16[typeCode] || fallback;
 
-            document.getElementById('typeTitle').textContent = result.name;
-            document.getElementById('typeDescription').textContent = result.desc;
-            document.getElementById('typeImage').src = `images/${typeCode}.png`;
+document.getElementById('typeCode').textContent = typeCode;  // ← これ追加
+document.getElementById('typeTitle').textContent = result.name;
+document.getElementById('typeDescription').textContent = result.desc;
+document.getElementById('typeImage').src = `images/${typeCode}.png`;
             document.getElementById('result').style.display = 'block';
             document.getElementById('nextBtn').style.display = 'none';
             document.querySelector('form').style.display = 'none';
