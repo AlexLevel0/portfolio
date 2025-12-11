@@ -121,27 +121,31 @@
         let current = 1;
         const total = 10;
 
-        // ★ここを全部16タイプちゃんと定義し直したよ★
         const types16 = {
-            "STCP": {name:"孤独の戦略王", desc:"一人で完璧な作戦を立て、敵を完膚なきまでに叩き潰すのが生きがい"},
-            "STCO": {name:"静かな協力者", desc:"一人で考え抜いた最高の作戦を、静かに仲間と共有して勝利する影のMVP"},
-            "SACP": {name:"一匹狼アクション", desc:"誰にも邪魔されず、華麗に敵をぶっ倒すのが最高の快感"},
-            "SACO": {name:"ソロでも仲間思い", desc:"基本一人だけど、協力するときはめっちゃ頼りになる存在"},
-            "MTCP": {name:"みんなで頭脳戦", desc:"大人数でワイワイ言いながら最強の戦略を練るのが最高に楽しい"},
-            "MTCO": {name:"パーティーリーダー", desc:"みんなを引っ張って大ボスを倒すのが生きがい。カリスマ持ち"},
-            "MACP": {name:"乱戦の帝王", desc:"大人数対戦で常にトップを獲る。勝ちに飢えてる"},
-            "MACO": {name:"最強の仲間ゲーマー", desc:"みんなで笑って泣いて勝つ。それが人生"},
-            
-            // 短時間側（Deep → CasualのC）
-            "SDCP": {name:"気軽ソロ対戦狂", desc:"ちょっとした時間にサクッと対戦して勝ちたい。隙間時間の覇者"},
-            "SDCO": {name:"ゆるふわ協力ゲーマー", desc:"のんびりみんなで協力してクリアするのが幸せ。癒し系"},
-            "SACP": {name:"短時間アクション狂", desc:"10分で100人斬り！瞬間最大火力タイプ"},  // 重複してたけど上書きでOK
-            "SACO": {name:"ソロ短時間マスター", desc:"一人でサクッと遊んで満足。効率厨"},  // 修正
-            "MDCP": {name:"みんなでガチ対戦狂", desc:"大人数でランキング争いするのが最高に熱い"},
-            "MDCO": {name:"大規模協力伝説", desc:"100人でレイドボス倒した時の感動は忘れない"},
-            "MACP": {name:"アクション対戦王", desc:"反射神経と読みで常に勝利を掴む"},  // 重複上書き
-            "MACO": {name:"みんなでアクション祭", desc:"大人数でドタバタ協力アクションが最高！"}
-        };
+    // Solo + Thinking + Deep + Competitive
+    "STDP": {name:"孤独の戦略王", desc:"一人で長時間じっくり考えて敵を完膚なきまでに倒す"},
+    "STDO": {name:"静かな協力戦略家", desc:"一人で考え抜いた作戦を仲間と共有して長時間勝利を目指す"},
+    "STCP": {name:"ソロ短時間戦略家", desc:"隙間時間にサクッと戦略で勝ちたい"},
+    "STCO": {name:"短時間ソロ協力者", desc:"短い時間でも仲間と軽く協力して楽しむ"},
+
+    // Solo + Action + Deep + Competitive
+    "SADP": {name:"一匹狼アクション", desc:"長時間一人で華麗に敵を倒しまくる"},
+    "SADO": {name:"ソロでも仲間思いアクション", desc:"基本一人だけど長時間協力も悪くない"},
+    "SACP": {name:"短時間アクション狂", desc:"10分で100人斬りしたい"},
+    "SACO": {name:"ソロ短時間マスター", desc:"一人でサクッと遊んで満足"},
+
+    // Multi + Thinking + Deep + Competitive
+    "MTDP": {name:"みんなで頭脳戦王", desc:"大人数で長時間戦略を練って勝ちたい"},
+    "MTDO": {name:"パーティーリーダー", desc:"みんなを引っ張って長時間大ボスを倒す"},
+    "MTCP": {name:"短時間みんなで頭脳戦", desc:"みんなでサクッと戦略パーティー"},
+    "MTCO": {name:"短時間協力リーダー", desc:"短い時間でみんなをまとめて勝利"},
+
+    // Multi + Action + Deep + Competitive
+    "MADP": {name:"乱戦の帝王", desc:"大人数長時間対戦で常にトップ"},
+    "MADO": {name:"みんなでアクション協力", desc:"大人数で長時間ド派手協力アクションが最高"},
+    "MACP": {name:"短時間アクション対戦王", desc:"大人数でサクッとガチバトル"},
+    "MACO": {name:"みんなで短時間アクション祭", desc:"大人数でドタバタ短時間協力が楽しい"}
+};
 
         // 念のため存在しないコードが来たら宇宙人にする（デバッグ用）
         const fallback = {name:"宇宙人ゲーマー", desc:"君は地球の常識を超えた新しいゲーマータイプだ…！"};
@@ -180,10 +184,10 @@
             document.querySelectorAll('input[name="axis4"]:checked').forEach(el => a4 += parseInt(el.value));
 
             const typeCode = 
-                (a1 >= 0 ? 'M' : 'S') +  // Multi / Solo
-                (a2 >= 0 ? 'A' : 'T') +  // Action / Thinking
-                (a3 >= 0 ? 'D' : 'C') +  // Deep(長時間) / Casual(短時間)
-                (a4 >= 0 ? 'O' : 'P');   // cOoperative / comPetitive
+    (a1 >= 0 ? 'M' : 'S') +
+    (a2 >= 0 ? 'A' : 'T') +
+    (a3 >= 0 ? 'D' : 'C') +
+    (a4 >= 0 ? 'O' : 'P');
 
             const result = types16[typeCode] || fallback;
 
