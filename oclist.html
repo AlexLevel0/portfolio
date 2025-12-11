@@ -30,20 +30,21 @@
       text-align: center;
       color: white;
       text-shadow: 0 3px 10px rgba(0,0,0,0.2);
-      margin-bottom: 30px;
-      font-size: 2.2rem;
+      margin-bottom: 40px;
+      font-size: 2.4rem;
+      letter-spacing: 2px;
     }
 
     .character-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr); /* スマホ */
-      gap: 20px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
       padding: 10px;
     }
 
     @media (min-width: 768px) {
       .character-grid {
-        grid-template-columns: repeat(5, 1fr); /* タブレット〜 */
+        grid-template-columns: repeat(5, 1fr);
       }
     }
 
@@ -51,27 +52,20 @@
       background: white;
       border-radius: 20px;
       overflow: hidden;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-      transition: all 0.3s ease;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+      transition: all 0.35s ease;
       cursor: pointer;
     }
 
     .character-card:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+      transform: translateY(-12px);
+      box-shadow: 0 25px 50px rgba(0,0,0,0.18);
     }
 
-    .character-card img {
-      width: 100%;
-      height: 220px;
-      object-fit: cover;
-    }
-
-    /* ここを変更！3:4固定比率に */
     .img-wrapper {
       position: relative;
       width: 100%;
-      padding-top: 133.33%; /* 3:4 = 3/4 = 0.75 → 1/0.75 = 133.33% */
+      padding-top: 133.33%; /* 3:4 固定比率 */
       overflow: hidden;
       border-radius: 20px 20px 0 0;
     }
@@ -82,62 +76,62 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      transition: transform 0.4s ease;
+      transition: transform 0.5s ease;
     }
 
     .character-card:hover .img-wrapper img {
-      transform: scale(1.08);
+      transform: scale(1.1);
     }
 
     .info {
-      padding: 15px;
+      padding: 18px 10px;
       text-align: center;
     }
 
     .name {
-      font-size: 1.3rem;
+      font-size: 1.35rem;
       font-weight: bold;
       color: #333;
-      margin-bottom: 5px;
     }
 
-    .title {
-      font-size: 0.9rem;
-      color: #888;
-    }
-
-    /* モーダル */
+    /* モーダル（3:4画像 + 説明位置変更） */
     .modal {
       display: none;
       position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.7);
+      inset: 0;
+      background: rgba(0,0,0,0.75);
       align-items: center;
       justify-content: center;
       z-index: 1000;
+      backdrop-filter: blur(8px);
     }
 
     .modal-content {
       background: white;
-      border-radius: 25px;
+      border-radius: 28px;
       width: 90%;
-      max-width: 420px;
+      max-width: 440px;
       overflow: hidden;
-      animation: modalPop 0.4s ease;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      animation: pop 0.4s ease;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.35);
     }
 
-    @keyframes modalPop {
-      from { transform: scale(0.7); opacity: 0; }
+    @keyframes pop {
+      from { transform: scale(0.8); opacity: 0; }
       to { transform: scale(1); opacity: 1; }
     }
 
+    /* モーダル画像：完全に3:4固定 */
     .modal-header {
       position: relative;
-      height: 250px;
+      width: 100%;
+      padding-top: 133.33%; /* 3:4 */
+      background: #f0f0f0;
     }
 
     .modal-header img {
+      position: absolute;
+      top: 0; left: 0;
       width: 100%;
       height: 100%;
       object-fit: cover;
@@ -145,29 +139,40 @@
 
     .close {
       position: absolute;
-      top: 15px;
+      top: 16px;
       right: 20px;
-      font-size: 2rem;
+      font-size: 2.4rem;
       color: white;
       cursor: pointer;
-      text-shadow: 0 0 10px black;
+      text-shadow: 0 0 15px black;
+      z-index: 10;
     }
 
     .modal-body {
-      padding: 25px;
-    }
-
-    .modal-name {
-      font-size: 1.8rem;
-      color: #333;
-      margin-bottom: 10px;
+      padding: 28px 24px 32px;
       text-align: center;
     }
 
+    /* ここが新仕様！ */
+    .modal-title {
+      font-size: 1.05rem;
+      color: #888;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+
+    .modal-name {
+      font-size: 2rem;
+      color: #333;
+      margin-bottom: 18px;
+      font-weight: bold;
+    }
+
     .modal-desc {
-      line-height: 1.7;
+      line-height: 1.8;
       color: #555;
-      font-size: 1rem;
+      font-size: 1.02rem;
+      white-space: pre-line;
     }
   </style>
 </head>
@@ -182,9 +187,10 @@
     <div class="modal-content">
       <div class="modal-header">
         <img id="modalImg" src="" alt="">
-        <span class="close">&times;</span>
+        <span class="close">×</span>
       </div>
       <div class="modal-body">
+        <div class="modal-title" id="modalTitle"></div>
         <h2 class="modal-name" id="modalName"></h2>
         <p class="modal-desc" id="modalDesc"></p>
       </div>
@@ -192,7 +198,6 @@
   </div>
 
   <script>
-
     const characters = [
       { name: "エリカ", title: "可愛いもの好き", img: "images/erica.jpeg", desc: "" },
       { name: "ジュリアン", title: "お笑い好き", img: "images/julian.jpeg", desc: "" },
@@ -201,17 +206,16 @@
       { name: "ノエル", title: "不思議ちゃん", img: "images/noel.jpeg", desc: "" },
       { name: "ハーティー", title: "小悪魔ちゃん", img: "images/hearty.jpeg", desc: "" },
       { name: "ハルト", title: "クールな先輩", img: "images/haruto.jpeg", desc: "" },
-      // ここに100人でも200人でも追加OK！
     ];
 
     const grid = document.getElementById('grid');
     const modal = document.getElementById('modal');
     const modalImg = document.getElementById('modalImg');
+    const modalTitle = document.getElementById('modalTitle');
     const modalName = document.getElementById('modalName');
     const modalDesc = document.getElementById('modalDesc');
     const close = document.querySelector('.close');
 
-    // カード生成
     characters.forEach(char => {
       const card = document.createElement('div');
       card.className = 'character-card';
@@ -221,23 +225,27 @@
         </div>
         <div class="info">
           <div class="name">${char.name}</div>
-          <div class="title">${char.title}</div>
         </div>
       `;
       card.onclick = () => {
         modalImg.src = char.img;
-        modalName.textContent = char.name + "（" + char.title + "）";
-        modalDesc.textContent = char.desc;
+        modalTitle.textContent = char.title;
+        modalName.textContent = char.name;  // （）なし！
+        modalDesc.textContent = char.desc || "まだ秘密だよ♡";
         modal.style.display = 'flex';
       };
       grid.appendChild(card);
     });
 
-    // モーダル閉じる
     close.onclick = () => modal.style.display = 'none';
     modal.onclick = (e) => {
       if (e.target === modal) modal.style.display = 'none';
     };
+
+    // ESCキーでも閉じる（ハルの使いやすさUP）
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') modal.style.display = 'none';
+    });
   </script>
 </body>
 </html>
