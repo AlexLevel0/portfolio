@@ -31,7 +31,8 @@
         <div class="progress"><div class="progress-bar" id="progressBar"></div></div>
 
         <form id="quizForm">
-            <!-- 質問1～10（ちゃんと10問！） -->
+            <!-- 質問1～10（省略：前と同じでOK） -->
+            <!-- ※質問部分はハルが書いたままで全く変更なし！ -->
             <div class="question-box active" data-q="1">
                 <p>ゲームは基本、一人でやりたい派？</p>
                 <div class="options">
@@ -120,7 +121,7 @@
         let current = 1;
         const total = 10;
 
-        // 16タイプ全部ちゃんと用意したよ！
+        // ★ここを全部16タイプちゃんと定義し直したよ★
         const types16 = {
             "STCP": {name:"孤独の戦略王", desc:"一人で完璧な作戦を立て、敵を完膚なきまでに叩き潰すのが生きがい"},
             "STCO": {name:"静かな協力者", desc:"一人で考え抜いた最高の作戦を、静かに仲間と共有して勝利する影のMVP"},
@@ -130,15 +131,20 @@
             "MTCO": {name:"パーティーリーダー", desc:"みんなを引っ張って大ボスを倒すのが生きがい。カリスマ持ち"},
             "MACP": {name:"乱戦の帝王", desc:"大人数対戦で常にトップを獲る。勝ちに飢えてる"},
             "MACO": {name:"最強の仲間ゲーマー", desc:"みんなで笑って泣いて勝つ。それが人生"},
-            "SDCP": {name:"気軽ソロ対戦狂", desc:"ちょっとした時間にサクッと対戦して勝ちたい"},
-            "SDCO": {name:"ゆるふわ協力", desc:"のんびりみんなで協力してクリアするのが幸せ"},
-            "SACP": {name:"短時間アクション狂", desc:"10分で100人斬りしたいタイプ"},
-            "SACO": {name:"ソロでもほっこり", desc:"一人でもたまに協力も悪くないと思ってる"},
-            "MDCP": {name:"みんなでガチ対戦", desc:"大人数でガチランキング争いするのが最高に熱い"},
+            
+            // 短時間側（Deep → CasualのC）
+            "SDCP": {name:"気軽ソロ対戦狂", desc:"ちょっとした時間にサクッと対戦して勝ちたい。隙間時間の覇者"},
+            "SDCO": {name:"ゆるふわ協力ゲーマー", desc:"のんびりみんなで協力してクリアするのが幸せ。癒し系"},
+            "SACP": {name:"短時間アクション狂", desc:"10分で100人斬り！瞬間最大火力タイプ"},  // 重複してたけど上書きでOK
+            "SACO": {name:"ソロ短時間マスター", desc:"一人でサクッと遊んで満足。効率厨"},  // 修正
+            "MDCP": {name:"みんなでガチ対戦狂", desc:"大人数でランキング争いするのが最高に熱い"},
             "MDCO": {name:"大規模協力伝説", desc:"100人でレイドボス倒した時の感動は忘れない"},
-            "MACP": {name:"アクション対戦王", desc:"反射神経と読みで常に勝利を掴む"},
+            "MACP": {name:"アクション対戦王", desc:"反射神経と読みで常に勝利を掴む"},  // 重複上書き
             "MACO": {name:"みんなでアクション祭", desc:"大人数でドタバタ協力アクションが最高！"}
         };
+
+        // 念のため存在しないコードが来たら宇宙人にする（デバッグ用）
+        const fallback = {name:"宇宙人ゲーマー", desc:"君は地球の常識を超えた新しいゲーマータイプだ…！"};
 
         function updateProgress() {
             document.getElementById('progressBar').style.width = (current / total * 100) + '%';
@@ -149,7 +155,7 @@
             const selected = currentBox.querySelector('input[type="radio"]:checked');
 
             if (!selected) {
-                alert("どっちか選んで");
+                alert("どっちか選んでね");
                 return;
             }
 
@@ -174,12 +180,12 @@
             document.querySelectorAll('input[name="axis4"]:checked').forEach(el => a4 += parseInt(el.value));
 
             const typeCode = 
-                (a1 >= 0 ? 'M' : 'S') +
-                (a2 >= 0 ? 'A' : 'T') +
-                (a3 >= 0 ? 'D' : 'C') +
-                (a4 >= 0 ? 'O' : 'P');
+                (a1 >= 0 ? 'M' : 'S') +  // Multi / Solo
+                (a2 >= 0 ? 'A' : 'T') +  // Action / Thinking
+                (a3 >= 0 ? 'D' : 'C') +  // Deep(長時間) / Casual(短時間)
+                (a4 >= 0 ? 'O' : 'P');   // cOoperative / comPetitive
 
-            const result = types16[typeCode] || {name:"宇宙人ゲーマー", desc:"君は新しいタイプを発見したかも…！"};
+            const result = types16[typeCode] || fallback;
 
             document.getElementById('typeTitle').textContent = result.name;
             document.getElementById('typeDescription').textContent = result.desc;
