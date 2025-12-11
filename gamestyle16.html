@@ -124,32 +124,31 @@
         let current = 1;
         const total = 10;
 
-        const types16 = {
+ const types16 = {
     // Solo + Thinking + Deep + Competitive
-    "STDP": {name:"孤独の戦略王", desc:"一人で長時間じっくり考えて敵を完膚なきまでに倒す"},
-    "STDO": {name:"静かな協力戦略家", desc:"一人で考え抜いた作戦を仲間と共有して長時間勝利を目指す"},
-    "STCP": {name:"ソロ短時間戦略家", desc:"隙間時間にサクッと戦略で勝ちたい"},
-    "STCO": {name:"短時間ソロ協力者", desc:"短い時間でも仲間と軽く協力して楽しむ"},
+    "STDP": {name:"影の覇王 (Shadow Overlord)", desc:"長時間一人きりで完璧な戦略を練り、敵を完膚なきまでに葬る孤高の帝王🗡️。シヴィライゼーションやStarCraftで世界征服気分を味わうタイプ。勝ちの達成感が人生の糧。"},
+    "STDO": {name:"静寂の盟友 (Silent Ally)", desc:"一人で深く考え抜いた神業作戦を、選ばれし仲間だけに共有して長時間勝利を掴む影の英雄🤝。協力は少数精鋭、FF14のソロ寄りPTで輝く存在。信頼の絆が熱い！"},
+    "STCP": {name:"閃光の策士 (Flash Tactician)", desc:"隙間時間にサクッと頭脳戦で敵を翻弄する、短時間無双のソロ天才🧠。Among UsやHearthstoneで一瞬の読み勝ちを楽しむ。日常のストレスを戦略で吹き飛ばせ！"},
+    "STCO": {name:"瞬間の絆主 (Moment Bondmaster)", desc:"短い時間でも仲間と軽く頭脳を合わせ、完璧クリアの喜びを分かち合うソロ協力者✨。Jackboxや短編脱出ゲームで、友達の笑顔が最高の報酬だよ。"},
 
     // Solo + Action + Deep + Competitive
-    "SADP": {name:"一匹狼アクション", desc:"長時間一人で華麗に敵を倒しまくる"},
-    "SADO": {name:"ソロでも仲間思いアクション", desc:"基本一人だけど長時間協力も悪くない"},
-    "SACP": {name:"短時間アクション狂", desc:"10分で100人斬りしたい"},
-    "SACO": {name:"ソロ短時間マスター", desc:"一人でサクッと遊んで満足"},
+    "SADP": {name:"孤狼の屠殺者 (Lone Wolf Slayer)", desc:"長時間一人で反射神経全開、敵を華麗に蹴散らす無慈悲のハンター🔥。Dark SoulsやSekiroで死にまくりながら頂点を目指す。ソロの頂上征服が生きがい。"},
+    "SADO": {name:"独行の守護狼 (Solo Guardian Wolf)", desc:"基本一人でアクションを極めつつ、長時間協力で仲間を支える頼れる影の狼🐺。Monster Hunterのソロ狩りから急なPT参加まで、何でもござれの適応力王。"},
+    "SACP": {name:"爆速斬鬼 (Blitz Reaper)", desc:"10分で100人斬り！短時間アクションで敵を瞬殺する狂気のスピードスター⚡。ApexのクイックマッチやFall Guysでアドレナリン全開。隙あらば無双！"},
+    "SACO": {name:"閑古の迅者 (Casual Swiftmaster)", desc:"一人でサクッとアクションをこなし、短時間で満足の極みを味わう効率の化身🌟。CelesteのショートランやモバイルFPSで、忙しい日常を爽快に彩るよ。"},
 
     // Multi + Thinking + Deep + Competitive
-    "MTDP": {name:"みんなで頭脳戦王", desc:"大人数で長時間戦略を練って勝ちたい"},
-    "MTDO": {name:"パーティーリーダー", desc:"みんなを引っ張って長時間大ボスを倒す"},
-    "MTCP": {name:"短時間みんなで頭脳戦", desc:"みんなでサクッと戦略パーティー"},
-    "MTCO": {name:"短時間協力リーダー", desc:"短い時間でみんなをまとめて勝利"},
+    "MTDP": {name:"群雄の智将 (Warlord Sage)", desc:"大人数で長時間頭脳を激突させ、戦略の頂点で君臨するワイワイ帝王👑。League of Legendsのランク戦やCivilizationマルチで、仲間を率いて世界制覇。熱き議論がたまらない。"},
+    "MTDO": {name:"宴の覇導者 (Feast Commander)", desc:"みんなを束ねて長時間大作戦を成功させる、カリスマ全開のパーティー総帥🎉。WoWのレイドボス攻略で、勝利の雄叫びを仲間と共有。リーダーシップの塊だぜ！"},
+    "MTCP": {name:"迅智の乱舞者 (Quickmind Dancer)", desc:"みんなでサクッと短時間頭脳戦を繰り広げ、笑いながら勝ちまくる集団の閃光🌀。Tabletop Simulatorや短めボードゲームで、パーティーの華になるよ。"},
+    "MTCO": {name:"刹那の盟約王 (Instant Pactlord)", desc:"短時間でみんなをまとめ、協力の勝利を掴む瞬殺リーダー💥。Overcookedのマルチで大爆笑クリア。忙しくても絆を深める天才。"},
 
     // Multi + Action + Deep + Competitive
-    "MADP": {name:"乱戦の帝王", desc:"大人数長時間対戦で常にトップ"},
-    "MADO": {name:"みんなでアクション協力", desc:"大人数で長時間ド派手協力アクションが最高"},
-    "MACP": {name:"短時間アクション対戦王", desc:"大人数でサクッとガチバトル"},
-    "MACO": {name:"みんなで短時間アクション祭", desc:"大人数でドタバタ短時間協力が楽しい"}
+    "MADP": {name:"混沌の戦鬼 (Chaos Berserker)", desc:"大人数長時間対戦で常にトップを獲り尽くす、乱戦の絶対帝王💀。ValorantやFortniteのエンドゲームで、敵を蹂躙。勝ちの渇望が止まらないぜ！"},
+    "MADO": {name:"狂宴の連撃王 (Rave Striker)", desc:"大人数で長時間ド派手アクションを仲間と爆走！協力の嵐が最高のエクスタシー🌪️。Destiny 2のレイドやGTA Onlineで、熱狂の渦中を駆け抜ける！"},
+    "MACP": {name:"電光乱舞帝 (Thunder Clash Emperor)", desc:"大人数でサクッとガチアクション対戦、無双の電撃を放つ短時間覇者⚡。Rocket Leagueのクイックマッチで、瞬時の読みで頂点へ。アドレナリンの帝王だ！"},
+    "MACO": {name:"祭騒の疾風隊 (Festival Stormtroop)", desc:"大人数でドタバタ短時間アクション祭！協力の笑いが止まらない祭りの風神🎊。Fall GuysやParty Animalsで、みんなの爆笑が最高のトロフィー。"}
 };
-
         // 念のため存在しないコードが来たら宇宙人にする（デバッグ用）
         const fallback = {name:"宇宙人ゲーマー", desc:"君は地球の常識を超えた新しいゲーマータイプだ…！"};
 
