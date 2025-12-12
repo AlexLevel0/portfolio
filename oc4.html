@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ぽフェス</title>
+    <style>
+        body {
+            font-family: 'Helvetica', sans-serif;
+            background: #f9f5f0;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        h1, h2 {
+            text-align: center;
+            color: #444;
+        }
+
+        /* キャラクター紹介リスト */
+        .character-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* スマホ基準：2列 */
+            gap: 20px;
+            max-width: 1200px;
+            margin: 40px auto;
+        }
+        .character-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .character-card img {
+            width: 100%;
+            max-width: 200px;
+            border-radius: 50%;
+            margin-bottom: 15px;
+        }
+        .character-card h3 {
+            margin: 10px 0;
+            color: #5a5a5a;
+        }
+
+        /* タブレット以上：3列 */
+        @media (min-width: 768px) {
+            .character-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        /* 小説パート */
+        .novel-container {
+            max-width: 800px;
+            margin: 60px auto;
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        .page {
+            display: none;
+        }
+        .page.active {
+            display: block;
+        }
+        .nav-buttons {
+            text-align: center;
+            margin-top: 40px;
+        }
+        button {
+            background: #6b7280;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 0 10px;
+        }
+        button:hover {
+            background: #4b5563;
+        }
+        button:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+
+          .novel-text {
+        line-height: 1.8;           /* 行間広めで読みやすい */
+        white-space: pre-line;      /* 改行をそのまま反映 */
+        margin: 20px 0;
+    }
+    .novel-text::first-line {
+        padding-left: 2em;          /* 段落の最初を少し下げて小説っぽく */
+    }
+    </style>
+</head>
+<body>
+
+    <h1>キャラクター紹介</h1>
+    <div class="character-grid">
+        <div class="character-card">
+            <img src="https://via.placeholder.com/200?text=キャラ1" alt="キャラ1">
+            <h3>キャラ1</h3>
+            <p>クールなリーダー。冷静沈着でみんなを引っ張る。</p>
+        </div>
+        <div class="character-card">
+            <img src="https://via.placeholder.com/200?text=キャラ2" alt="キャラ2">
+            <h3>キャラ2</h3>
+            <p>元気いっぱいのお調子者。笑いが止まらない。</p>
+        </div>
+        <div class="character-card">
+            <img src="https://via.placeholder.com/200?text=キャラ3" alt="キャラ3">
+            <h3>キャラ3</h3>
+            <p>おっとり癒し系。でも意外と芯が強い。</p>
+        </div>
+        <div class="character-card">
+            <img src="https://via.placeholder.com/200?text=キャラ4" alt="キャラ4">
+            <h3>キャラ4</h3>
+            <p>頭脳派。知識が豊富で頼りになる。</p>
+        </div>
+        <div class="character-card">
+            <img src="https://via.placeholder.com/200?text=キャラ5" alt="キャラ5">
+            <h3>キャラ5</h3>
+            <p>ツンデレの極み。でも本当は優しい。</p>
+        </div>
+        <div class="character-card">
+            <img src="https://via.placeholder.com/200?text=キャラ6" alt="キャラ6">
+            <h3>キャラ6</h3>
+            <p>ミステリアスな雰囲気。過去に秘密がありそう。</p>
+        </div>
+    </div>
+
+    <h1>小説</h1>
+    <!-- 小説パートの改良版（ここだけ置き換え） -->
+<div class="novel-container">
+    <div id="page1" class="page active">
+        <h2>第1章</h2>
+        <div class="novel-text">
+ああああ
+        </div>
+    </div>
+    <div id="page2" class="page">
+        <h2>第2章</h2>
+        <div class="novel-text">
+あああああ
+          あああ
+          あああ
+        </div>
+    </div>
+    <div id="page3" class="page">
+        <h2>第3章</h2>
+        <div class="novel-text">
+ああああ
+          あああ
+
+          ああ
+        </div>
+    </div>
+
+    <div class="nav-buttons">
+        <button id="prevBtn" onclick="prevPage()" disabled>前のページ</button>
+        <button id="nextBtn" onclick="nextPage()">次のページ</button>
+    </div>
+</div>
+
+
+    <script>
+        let currentPage = 1;
+        const totalPages = 3;
+
+        function showPage(page) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById('page' + page).classList.add('active');
+            
+            document.getElementById('prevBtn').disabled = page === 1;
+            document.getElementById('nextBtn').disabled = page === totalPages;
+        }
+
+        function nextPage() {
+            if (currentPage < totalPages) {
+                currentPage++;
+                showPage(currentPage);
+            }
+        }
+
+        function prevPage() {
+            if (currentPage > 1) {
+                currentPage--;
+                showPage(currentPage);
+            }
+        }
+    </script>
+</body>
+</html>
