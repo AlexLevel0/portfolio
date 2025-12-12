@@ -33,11 +33,16 @@
             text-align: center;
         }
         .character-card img {
-            width: 100%;
-            max-width: 200px;
-            border-radius: 50%;
-            margin-bottom: 15px;
-        }
+        width: 100%;              /* カードの幅に合わせて伸縮 */
+        height: auto;             /* 縦横比維持 */
+        max-width: 200px;         /* 最大サイズ制限 */
+        aspect-ratio: 1 / 1;      /* ここで強制的に1:1にする */
+        object-fit: cover;        /* 画像が歪まないよう、余白をトリミング */
+        border-radius: 50%;       /* 円形のまま */
+        margin: 0 auto 15px;      /* 中央寄せ */
+        display: block;
+        background: #eee;         /* 読み込み中の色（お好みで） */
+    }
         .character-card h3 {
             margin: 10px 0;
             color: #5a5a5a;
