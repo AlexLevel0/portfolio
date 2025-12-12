@@ -1051,26 +1051,40 @@
         const totalPages = 13;
 
         function showPage(page) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById('page' + page).classList.add('active');
-            
-            document.getElementById('prevBtn').disabled = page === 1;
-            document.getElementById('nextBtn').disabled = page === totalPages;
-        }
+        // すべてのページを非表示
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        // 指定ページを表示
+        document.getElementById('page' + page).classList.add('active');
+        
+        // ボタンの有効/無効
+        document.getElementById('prevBtn').disabled = page === 1;
+        document.getElementById('nextBtn').disabled = page === totalPages;
 
-        function nextPage() {
-            if (currentPage < totalPages) {
-                currentPage++;
-                showPage(currentPage);
-            }
-        }
+        // ★ここが大事★ 小説コンテナのスクロール位置を強制的にトップに戻す
+        document.querySelector('.novel-container').scrollTop = 0;
 
-        function prevPage() {
-            if (currentPage > 1) {
-                currentPage--;
-                showPage(currentPage);
-            }
+        // もしスマホとかで全体のページスクロールもリセットしたいならこれも追加
+        window.scrollTo(0, document.querySelector('.novel-container').offsetTop - 20);
+    }
+
+    function nextPage() {
+        if (currentPage < totalPages) {
+            currentPage++;
+            showPage(currentPage);
         }
+    }
+
+    function prevPage() {
+        if (currentPage > 1) {
+            currentPage--;
+            showPage(currentPage);
+        }
+    }
+
+    // 最初に表示したときも確実にトップにする
+    window.onload = function() {
+        showPage(1);
+    };
     </script>
 </body>
 </html>
